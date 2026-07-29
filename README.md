@@ -110,9 +110,9 @@ The single active unit that travels on the gantry. Contains all expensive and ac
 
 Interchangeable tools parked in a dock within reach of the gantry. Each tool contains a filament path and a specially designed nozzle, and nothing else. No wires, no heaters, no thermistors, no electronics. Heat is delivered wirelessly by the Smart Head's induction coil when the tool is picked up; the tool cools passively when deposited back in the dock.
 
-Two variants are available, both built from hardened steel:
+Two variants are available, both built from steel:
 
-- **CHT (Core Heating Technology)**: splits filament into three strands internally for faster melting and higher flow rates. The standard choice for most materials including abrasive-filled filaments. Available in common sizes.
+- **CHT (Core Heating Technology)**: splits filament into three strands internally for faster melting and higher flow rates. The standard choice for most materials except abrasive materials. Available in common sizes.
 - **Standard (non-CHT)**: straight-through melt zone with lower back-pressure, optimized for soft flexible filaments (TPU, TPE).
 
 Tools are held in the Smart Head by a high-precision **Maxwell coupling** (a 3-point kinematic coupling that self-aligns the tool to the exact same position every time it is picked up), ensuring micron-level repeatability on every tool change. In practice this means you calibrate your tool offsets once, and they stay correct across thousands of tool changes.
@@ -152,7 +152,7 @@ Thin Passive Tools are the interchangeable tool heads that do the actual printin
 
 | Option | Nozzle sizes | Best for |
 | ------ | ------------ | -------- |
-| **CHT (Core Heating Technology)** | 0.4 / 0.5 / 0.6 / 0.8 / 1.0mm | Most materials: PLA, PETG, ABS, ASA, PA, abrasive-filled filaments |
+| **CHT (Core Heating Technology)** | 0.4 / 0.5 / 0.6 / 0.8 / 1.0mm | Most materials: PLA, PETG, ABS, ASA, TPU, TPE, PVA, BVOH, HIPS, PC, Nylon, PP, PBT, unfilled PC blends, and other non-abrasive filaments |
 | **Standard (non-CHT)** | 0.25 / 0.4mm | Flexible filaments (TPU, TPE) and sensitive composites |
 
 See [Thin Passive Tools](#thin-passive-tools) in the Technical Specifications for full details on each variant.
@@ -371,16 +371,17 @@ A USB cable from the Link Board to your host computer is not included and must b
 
 ### Thin Passive Tools
 
-All Thin Passive Tools are built from hardened steel, contain no electronics or wiring, and use induction heating via the Smart Head. Two variants are available:
+All Thin Passive Tools are built from steel, contain no electronics or wiring, and use induction heating via the Smart Head. Two variants are available:
 
 **CHT (Core Heating Technology): Standard choice for most materials**
 
-Uses Bondtech's patented CHT internal geometry, which splits filament into three thinner strands for faster melting and higher flow rates. Recommended for PLA, PETG, ABS, ASA, PA, and abrasive-filled filaments (Carbon Fiber, Glass Fiber). Not recommended for soft flexible filaments.
+Uses Bondtech's patented CHT internal geometry, which splits filament into three thinner strands for faster melting and higher flow rates. Recommended for PLA, PETG, ABS, ASA, TPU, TPE, PVA, BVOH, HIPS, PC, Nylon, PP, PBT, unfilled PC blends, and other non-abrasive filaments.
+Not recommended for soft flexible filaments.
 
 | Specification | Value |
 | ------------- | ----- |
 | Available nozzle sizes | 0.4 / 0.5 / 0.6 / 0.8 / 1.0mm |
-| Material | Hardened steel |
+| Material | Steel |
 | Compatible filament diameter | 1.75mm |
 | Maximum nozzle temperature | 300°C |
 | Electronics | None |
@@ -388,12 +389,12 @@ Uses Bondtech's patented CHT internal geometry, which splits filament into three
 
 **Standard (non-CHT): For flexible and sensitive materials**
 
-Uses a straight-through melt zone with minimal back-pressure, specifically optimized for soft flexible filaments (TPU, TPE) and sensitive composites. Built to the same hardened steel standard, so it handles abrasive filaments equally well.
+Uses a straight-through melt zone with minimal back-pressure, specifically optimized for soft flexible filaments (TPU, TPE) and sensitive composites. Built to the same steel standard.
 
 | Specification | Value |
 | ------------- | ----- |
 | Available nozzle sizes | 0.25 / 0.4mm |
-| Material | Hardened steel |
+| Material | Steel |
 | Compatible filament diameter | 1.75mm |
 | Maximum nozzle temperature | 300°C |
 | Electronics | None |
