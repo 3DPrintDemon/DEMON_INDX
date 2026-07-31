@@ -1375,7 +1375,7 @@ Common slicers used with INDX include PrusaSlicer, OrcaSlicer, SuperSlicer, and 
 
   **OrcaSlicer**
 
-  Add under Printer Settings → Machine G-code → Tool change G-code:
+  Add under Printer Settings → Machine G-code → Change filament change G-code:
   ```gcode
   T{next_extruder}
   M400
