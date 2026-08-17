@@ -23,6 +23,7 @@
    - [Firmware Configuration](#firmware-configuration)
      - [Klipper / Kalico](#klipper)
        - [INDX macro files](#indx-macro-files)
+       - [Required Klipper sections](#required-klipper-sections)
        - [Automated dock X measurement](#automated-dock-x-measurement-built-in)
        - [Homing override](#homing-order-important)
      - [RRF (RepRapFirmware)](#rrf-reprapfirmware)
@@ -861,6 +862,23 @@ Include them from your `printer.cfg`:
 [include indx/indx-tc-macros.cfg]
 [include indx/indx-cal.cfg]
 ```
+
+##### Required Klipper sections
+
+The INDX macros depend on a few stock Klipper modules. If any of these are missing from your `printer.cfg`, the macros will fail at runtime rather than at startup, which makes the cause hard to spot. Add all of them:
+
+```ini
+[save_variables]
+filename: ~/printer_data/config/indx_vars.cfg
+
+[respond]
+```
+
+`save_variables` stores the state INDX has to survive a restart: the active tool, latch state, per-tool XY/Z offsets, the toolchange counter, and the current speed mode. Without it every macro that reads `printer.save_variables.variables` errors out, and the printer forgets which tool is mounted across reboots. Point `filename` at any writable path in your config directory; the file is created for you.
+
+`respond` provides the `RESPOND` command that every INDX macro uses for console output and prompts.
+
+The load cell is your Z probe, so a `[load_cell_probe]` section is required as well. See [Load Cell Calibration](#load-cell-calibration) for the calibration procedure.
 
 ##### Automated dock X measurement (built in)
 
