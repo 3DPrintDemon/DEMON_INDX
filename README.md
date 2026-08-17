@@ -588,15 +588,15 @@ Part cooling solutions snap onto the outside of the Smart Head cowlings. Attach 
 
 1. Loosen the screw that holds the INDX Front Cover.
 
-   ![Loosen front cover screw](https://github.com/user-attachments/assets/c57644c6-2b4c-4d02-891c-9f050e8e7851)
+   ![Loosen front cover screw](images/fan-shroud-cover-screw.png)
 
 2. Use an M3×8 screw to secure the INDX Front Cover together with the fan shroud clip.
 
-   ![Fan shroud clip installed](https://github.com/user-attachments/assets/b402a7be-7bbe-470f-b6ea-beee6c911570)
+   ![Fan shroud clip installed](images/fan-shroud-clip.png)
 
 3. With the clip installed, attach the fan shroud to the Front Cover. The shroud has an upper tab that locates into a slot at the top of the Front Cover (highlighted in blue). Align the tab with the slot, then rotate the bottom of the shroud inward until it seats in position.
 
-   ![Fan shroud mounted](https://github.com/user-attachments/assets/9df258fc-fd3e-47cc-bd77-6dbc678d1d25)
+   ![Fan shroud mounted](images/fan-shroud-mounted.png)
 
 #### 2. Mount the Dock
 
@@ -747,17 +747,17 @@ For RRF, flash and configure the Bondtech INDX PCB following the [Duet INDX Tool
 
 Before loading tools, check that the Tool Dock Activator is correctly installed. It is a small bracket mounted upright on the 15×15 mm aluminium extrusion using an M3×10 screw and an M3 nut. It must be perfectly vertical; this is the component that triggers the INDX latch mechanism during pickup.
 
-![Tool Dock Activator mounted on extrusion](https://github.com/user-attachments/assets/a1d0cd3c-d1e7-40e2-8e72-8514ac7940d6)
+![Tool Dock Activator mounted on extrusion](images/dock-activator-mounted.png)
 
 Check that it is perpendicular to the extrusion:
 
-![Tool Dock Activator vertical alignment](https://github.com/user-attachments/assets/008c117e-538e-4da7-a018-290983842493)
+![Tool Dock Activator vertical alignment](images/dock-activator-vertical.png)
 
 **Load tools into the dock**
 
 One passive tool fits in one dock position. Tools are retained by 3×8 mm bar magnets embedded in both the tool and the dock. The magnets naturally guide the tool into the correct orientation as you bring it close; follow the magnetic pull to seat it.
 
-![Passive tool loaded in dock](https://github.com/user-attachments/assets/a8289d67-da95-4ace-b877-5ad8fead438e)
+![Passive tool loaded in dock](images/dock-tool-loaded.png)
 
 > **Note:** You will set the exact dock position coordinates (`dock_y` and `t*_x`) during the calibration steps later. For now, just seat the tools; the INDX macros handle the rest once configured.
 
