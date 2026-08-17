@@ -1067,14 +1067,14 @@ Start with **no tool on the Smart Head** and run:
 CALIBRATE_LOAD_CELL
 ```
 
-This homes X and Y, opens the latch, and tares the empty head. Now **seat a passive tool on the Smart Head by hand**, then lock it and calibrate against the known locking force (default 1600 g):
+This homes X and Y, opens the latch (and records soft-state Open), and tares the empty head. Now **seat a passive tool on the Smart Head by hand**, then calibrate against the known locking force (default 1600 g). `CALIBRATE_LOAD_CELL_APPLY` locks, samples, then unlocks again so you can remove the tool by hand.
 
 ```gcode
 CALIBRATE_LOAD_CELL_APPLY GRAMS=1600
 SAVE_CONFIG
 ```
 
-Prefer the console? Run `LOAD_CELL_CALIBRATE`, then `TARE` with no tool, seat a tool and lock the latch, then `CALIBRATE GRAMS=1600`, `ACCEPT`, and `SAVE_CONFIG`.
+Prefer the console? Run `LOAD_CELL_CALIBRATE`, then `TARE` with no tool, seat a tool and lock the latch, then `CALIBRATE GRAMS=1600`, `ACCEPT`, unlock the latch, and `SAVE_CONFIG`.
 
 Restart, then home the printer (`G28`) — Z now probes with the load cell.
 
