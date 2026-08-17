@@ -890,9 +890,12 @@ cs_pin: indxmcu:loadcell_cs
 spi_bus: sercom1
 data_ready_pin: indxmcu:loadcell_drdy
 channels: 0
+sample_rate: 500
 z_offset: 0.0
 trigger_force: 100
 speed: 5
+pullback_distance: 0.2
+pullback_speed: 0.3
 samples: 1
 sample_retract_dist: 0.5
 lift_speed: 20
@@ -904,9 +907,24 @@ The pins are named aliases rather than raw MCU pins, so this config stays valid 
 
 `trigger_force` is the contact force in grams that counts as a touch, and `z_offset` stays at `0.0` because the nozzle itself is the probe — there is no offset between probe and nozzle to correct for.
 
+`pullback_distance` and `pullback_speed` control what happens immediately after contact: the toolhead retracts a short distance at a slow speed while the load cell keeps sampling, and the tap analysis uses that force curve to work out the exact moment the nozzle touched. Slower and shorter gives a cleaner curve; too slow and every probe costs noticeable time.
+
 `samples: 1` is deliberate. `CAL_Z` does its own convergence and median sampling across many probes (see [Z Offset Calibration](#z-offset-calibration)), so asking the probe to average internally as well would only slow it down.
 
 Two values are missing from the block above on purpose: `counts_per_gram` and `reference_tare_counts`. Those come out of [load cell calibration](#load-cell-calibration) and are written to the `SAVE_CONFIG` block at the bottom of your `printer.cfg` automatically. Don't set them by hand — run the calibration and let it fill them in.
+
+> ⚠️ **This section is Kalico-specific.** Mainline Klipper also has a `[load_cell_probe]`, but it is a different implementation and does **not** accept `pullback_distance`, `pullback_speed`, `disable_pullback_move` or `drift_safety_limit`. Its `force_safety_limit` also has a minimum of 100, so a value of `0` is rejected where Kalico allows it. On mainline Klipper, drop the two pullback lines; everything else above is common to both.
+
+**Running a Beacon or Cartographer as well?**
+
+The load cell registers itself as the printer's probe, so a scanning probe on the same machine has to be told not to. For Beacon, add both of these to your `[beacon]` section:
+
+```ini
+register_as_probe: false
+prefixed_probe_commands: true
+```
+
+For Cartographer, add only the first line to `[cartographer]` — it will reject `prefixed_probe_commands`.
 
 ##### Automated dock X measurement (built in)
 
