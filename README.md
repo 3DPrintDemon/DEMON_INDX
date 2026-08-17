@@ -612,7 +612,7 @@ The dock must be positioned so that a parked tool sits **2mm higher** than it do
 **Alignment method**
 
 Use the printable alignment jig ([`INDX_Dock_calibration_tool.stl`](CAD/STL/INDX_Dock_calibration_tool.stl)) placed over the nozzle tool in the toolhead to set the correct height. The printer does not need to be powered on for this step; you are setting the physical dock height manually.
-_Pro tip: You can use the alignment jig to get exact X alignment of the docks by move your printhead to the desired X value before doing the steps below._
+_Pro tip: you can also use the alignment jig to get exact X alignment of the docks, by moving your printhead to the desired X value before doing the steps below._
 
 1. Place the printed alignment jig over the tool magnets while the tool is in the smart head.
 
@@ -1379,7 +1379,7 @@ Common slicers used with INDX include PrusaSlicer, OrcaSlicer, SuperSlicer, and 
 
   **OrcaSlicer**
 
-  Add under Printer Settings → Machine G-code → Change filament change G-code:
+  Add under Printer Settings → Machine G-code → Change filament G-code:
   ```gcode
   T{next_extruder}
   M400
