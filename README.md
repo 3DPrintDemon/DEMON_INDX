@@ -1250,7 +1250,7 @@ CAL_Z
 
 Prerequisites:
 - Printer homed (homes automatically if not)
-- **No filament available to the extruder gears in any tool** — latch engage moves during pickup can spike load-cell readings and calibration to fail if filament is loaded.
+- **No filament available to the extruder gears in any tool** — if filament is loaded, latch engage moves during pickup can spike load-cell readings and cause calibration to fail.
 
 Per tool, the macro:
 1. Picks up the tool
