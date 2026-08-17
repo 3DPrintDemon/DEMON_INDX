@@ -24,6 +24,7 @@
      - [Klipper / Kalico](#klipper)
        - [INDX macro files](#indx-macro-files)
        - [Required Klipper sections](#required-klipper-sections)
+       - [Load cell probe](#load-cell-probe)
        - [Automated dock X measurement](#automated-dock-x-measurement-built-in)
        - [Homing override](#homing-order-important)
      - [RRF (RepRapFirmware)](#rrf-reprapfirmware)
@@ -878,7 +879,34 @@ filename: ~/printer_data/config/indx_vars.cfg
 
 `respond` provides the `RESPOND` command that every INDX macro uses for console output and prompts.
 
-The load cell is your Z probe, so a `[load_cell_probe]` section is required as well. See [Load Cell Calibration](#load-cell-calibration) for the calibration procedure.
+##### Load cell probe
+
+The Smart Head's load cell is the printer's Z probe, so a `[load_cell_probe]` section is required too. The ADS131M02 that reads the load cell sits on the INDX toolboard, so its pins are addressed through the `indxmcu` MCU:
+
+```ini
+[load_cell_probe]
+sensor_type: ads131m02
+cs_pin: indxmcu:loadcell_cs
+spi_bus: sercom1
+data_ready_pin: indxmcu:loadcell_drdy
+channels: 0
+z_offset: 0.0
+trigger_force: 100
+speed: 5
+samples: 1
+sample_retract_dist: 0.5
+lift_speed: 20
+samples_tolerance: 0.01
+samples_tolerance_retries: 5
+```
+
+The pins are named aliases rather than raw MCU pins, so this config stays valid across INDX PCB revisions.
+
+`trigger_force` is the contact force in grams that counts as a touch, and `z_offset` stays at `0.0` because the nozzle itself is the probe — there is no offset between probe and nozzle to correct for.
+
+`samples: 1` is deliberate. `CAL_Z` does its own convergence and median sampling across many probes (see [Z Offset Calibration](#z-offset-calibration)), so asking the probe to average internally as well would only slow it down.
+
+Two values are missing from the block above on purpose: `counts_per_gram` and `reference_tare_counts`. Those come out of [load cell calibration](#load-cell-calibration) and are written to the `SAVE_CONFIG` block at the bottom of your `printer.cfg` automatically. Don't set them by hand — run the calibration and let it fill them in.
 
 ##### Automated dock X measurement (built in)
 
