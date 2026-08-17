@@ -278,7 +278,7 @@ The Bondtech INDX PCB is mounted inside the Smart Head and is the central electr
 | Fan | TACHO, FAN+, GND | Supports tachometer feedback |
 | LED | 5V (VBUS), NP OUT, GND | NeoPixel compatible |
 | Endstop | 3V3, SIGNAL, GND | 3.3V logic level |
-| USB | VBUS, DP+, DP−, GND, GND | Supports accessories such as camera or Beacon probe scanner |
+| USB | VBUS, DP+, DP−, GND, GND | Supports accessories such as camera or Beacon probe scanner. **The DP+/DP− silkscreen is swapped — see [USB data pins](#usb-data-pins-are-swapped)** |
 | CAN termination jumper | — | Enable/disable CAN bus termination |
 | CAN Reset jumper | — | Puts the board into DFU mode for firmware flashing; remove after flashing |
 | Communication switch | CAN / USB | Selects between CAN-FD and USB communication modes; must match the switch position on the Link Board |
@@ -440,7 +440,7 @@ All electronics are pre-installed inside the Smart Head; no internal wiring requ
 - **Endstop**: 3-pin, 3.3V logic level. Pin 1 3V3, Pin 2 SIGNAL, Pin 3 GND
 - **Fan**: 3-pin, supports tachometer feedback. Pin 1 TACHO, Pin 2 FAN+ (PWM 24V), Pin 3 GND
 - **LED**: 3-pin NeoPixel. Pin 1 5V (VBUS), Pin 2 NP OUT, Pin 3 GND
-- **USB**: 5-pin, supports accessories such as a camera or Beacon probe scanner. Pin 1 VBUS (5V), Pin 2 DP+, Pin 3 DP−, Pin 4 GND, Pin 5 GND
+- **USB**: 5-pin, supports accessories such as a camera or Beacon probe scanner. Pin 1 VBUS (5V), Pin 2 DP+, Pin 3 DP−, Pin 4 GND, Pin 5 GND. **The DP+ and DP− labels are swapped relative to the actual signals — see [USB data pins](#usb-data-pins-are-swapped) before wiring anything to this connector**
 - **Built-in accelerometer**: for resonance measurement and automatic input shaper calibration in Klipper
 - **CAN termination jumper**: fitting the jumper enables the 120 Ω end-of-line termination resistor. Fit only on boards at the physical ends of the CAN bus.
 - **CAN reset jumper**: Klipper: short the jumper to enter DFU mode for flashing. RRF: fit the jumper for CAN reset (also resets the CAN address). See the [Duet INDX Toolboard documentation](https://docs.duet3d.com/en/Duet3D_hardware/Duet_3_family/INDX_Toolboard).
@@ -449,6 +449,24 @@ All electronics are pre-installed inside the Smart Head; no internal wiring requ
 Induction heating and contactless IR temperature sensing are handled internally by the INDX VF PCB; no additional wiring or configuration needed.
 
 ![Bondtech INDX PCB pinout](images/bondtech-indx-pcb-pinout.jpg)
+
+##### USB data pins are swapped
+
+> ⚠️ **The DP+ and DP− labels on the USB connector are wrong.** The pin marked **DP+ is electrically DP−**, and the pin marked **DP− is electrically DP+**. This applies to the silkscreen, the pinout image above, and the pin tables in this document. Wire by function, not by label.
+
+So a USB accessory connects like this:
+
+| INDX pin | Marked | Actually is | Connect to |
+| -------- | ------ | ----------- | ---------- |
+| 1 | VBUS | VBUS (5V) | 5V |
+| 2 | DP+ | **DP−** | DATA − |
+| 3 | DP− | **DP+** | DATA + |
+| 4 | GND | GND | Ground |
+| 5 | GND | GND | — |
+
+For a Cartographer V4, whose own wiring guide lists black = Ground, green = DATA +, white = DATA −, that means green goes to the pin marked DP− and white goes to the pin marked DP+. Two users independently found that wiring by the printed labels fails to enumerate and that swapping the pair works.
+
+If a USB accessory isn't detected at all, this is the first thing to check.
 
 **Klipper pin → port mapping** (not exposed in RRF)
 
