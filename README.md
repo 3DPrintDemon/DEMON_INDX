@@ -1336,7 +1336,7 @@ LOAD_FILAMENT TOOL=0 TYPE=PLA
 ```
 
 - **`TOOL=<n>`** — which tool to load (it is picked up automatically).
-- **`TYPE=<material>`** — applies a density + heat-capacity preset and a default load temperature. Built-in types: `PLA`, `PETG`, `ABS`, `ASA`, `PA`, `PC`, `TPU`. Edit the `filament_presets` table in `indx-cal.cfg` to add materials or tune values.
+- **`TYPE=<material>`** — applies a density + heat-capacity preset and a default load temperature. Built-in types: `PLA`, `PETG`, `ABS`, `ASA`, `PA`, `PC`, `TPU`. Edit the `filament_presets` table in `indx-cal.cfg` to add materials or tune values. Presets may also set an optional `speed` (mm/s) for the feed/prime step; `TPU` uses 2 mm/s so soft filament does not buckle during guided load.
 - **`TEMP=<°C>`** *(optional)* — override the preset load temperature.
 - **`MEASURE=1`** *(optional)* — measure this filament's actual heat capacity while loading instead of using the preset (most accurate). Run `SAVE_CONFIG` afterwards to keep it.
 
@@ -1359,7 +1359,7 @@ Either approach significantly reduces the risk of tubes interfering with docked 
 
 **Flexible filaments (TPU and similar)**
 
-Keep the filament path as short as possible. Long Bowden paths cause flex filament to buckle rather than feed. Where possible, feed directly into the tool without a Bowden tube, or use a very short, straight tube. Avoid sharp bends in the path.
+Keep the filament path as short as possible. Long Bowden paths cause flex filament to buckle rather than feed. Where possible, feed directly into the tool without a Bowden tube, or use a very short, straight tube. Avoid sharp bends in the path. `LOAD_FILAMENT TYPE=TPU` also feeds slower than other presets (2 mm/s); tune `speed` in `filament_presets` if needed.
 
 ### Performing Tool Changes
 
