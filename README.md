@@ -636,11 +636,11 @@ _Pro tip: you can also use the alignment jig to get exact X alignment of the doc
 
 1. Place the printed alignment jig over the tool magnets while the tool is in the smart head.
 
-   ![Extra magnet placed on the INDX front trigger surface](images/align1.png)
+   ![Alignment jig fitted over the tool magnets on the Smart Head](images/align1.png)
 
 2. Loosen the bar holding screws in order to let it be adjusted up and down, then slide the smart head toward the tool dock and make sure the alignment jig enters the magnet holes smoothly without the smart head nodding from mechanical strain.
 
-   ![Magnet aligned with tool holder magnet](images/align2.png)
+   ![Alignment jig entering the tool holder magnet holes in the dock](images/align2.png)
 
 3. Secure the dock bar at that height
 
