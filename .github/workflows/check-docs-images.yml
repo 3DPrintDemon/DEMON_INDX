@@ -1,0 +1,57 @@
+name: Check docs images
+
+on:
+  push:
+    paths:
+      - '**/*.md'
+      - 'images/**'
+      - '.github/workflows/check-docs-images.yml'
+  pull_request:
+    paths:
+      - '**/*.md'
+      - 'images/**'
+  workflow_dispatch:
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Every documentation image must be a committed file
+        run: |
+          python3 - <<'EOF'
+          import glob, os, re, sys, urllib.parse
+
+          problems = []
+          for path in glob.glob('**/*.md', recursive=True):
+              src = open(path, encoding='utf-8').read()
+              refs = re.findall(r'!\[[^\]]*\]\(\s*([^)\s]+)', src)
+              refs += re.findall(r'<img[^>]+src="([^"]+)"', src)
+              for ref in refs:
+                  if ref.startswith(('http://', 'https://')):
+                      problems.append(
+                          f'{path}: external image {ref}\n'
+                          '    Images must be committed to the repo and referenced by relative\n'
+                          '    path. Hot-linked URLs are not repo content: GitHub attachment\n'
+                          '    assets are permission checked and break for readers who lack\n'
+                          '    access, and they render fine for whoever pasted them in.')
+                  elif not ref.startswith('#'):
+                      # Relative paths resolve against the directory of the markdown
+                      # file, not the repo root. A leading slash means repo root.
+                      rel = urllib.parse.unquote(ref).split('#')[0]
+                      if rel.startswith('/'):
+                          target = os.path.normpath(rel.lstrip('/'))
+                      else:
+                          target = os.path.normpath(
+                              os.path.join(os.path.dirname(path), rel))
+                      if not os.path.isfile(target):
+                          problems.append(f'{path}: missing image file {ref}')
+
+          if problems:
+              print('Documentation image check failed:\n')
+              for p in problems:
+                  print('  - ' + p)
+              sys.exit(1)
+          print('All documentation images are committed files with working paths.')
+          EOF

@@ -23,6 +23,8 @@
    - [Firmware Configuration](#firmware-configuration)
      - [Klipper / Kalico](#klipper)
        - [INDX macro files](#indx-macro-files)
+       - [Required Klipper sections](#required-klipper-sections)
+       - [Load cell probe](#load-cell-probe)
        - [Automated dock X measurement](#automated-dock-x-measurement-built-in)
        - [Homing override](#homing-order-important)
      - [RRF (RepRapFirmware)](#rrf-reprapfirmware)
@@ -110,9 +112,9 @@ The single active unit that travels on the gantry. Contains all expensive and ac
 
 Interchangeable tools parked in a dock within reach of the gantry. Each tool contains a filament path and a specially designed nozzle, and nothing else. No wires, no heaters, no thermistors, no electronics. Heat is delivered wirelessly by the Smart Head's induction coil when the tool is picked up; the tool cools passively when deposited back in the dock.
 
-Two variants are available, both built from hardened steel:
+Two variants are available, both built from steel:
 
-- **CHT (Core Heating Technology)**: splits filament into three strands internally for faster melting and higher flow rates. The standard choice for most materials including abrasive-filled filaments. Available in common sizes.
+- **CHT (Core Heating Technology)**: splits filament into three strands internally for faster melting and higher flow rates. The standard choice for most materials except abrasive materials. Available in common sizes.
 - **Standard (non-CHT)**: straight-through melt zone with lower back-pressure, optimized for soft flexible filaments (TPU, TPE).
 
 Tools are held in the Smart Head by a high-precision **Maxwell coupling** (a 3-point kinematic coupling that self-aligns the tool to the exact same position every time it is picked up), ensuring micron-level repeatability on every tool change. In practice this means you calibrate your tool offsets once, and they stay correct across thousands of tool changes.
@@ -152,7 +154,7 @@ Thin Passive Tools are the interchangeable tool heads that do the actual printin
 
 | Option | Nozzle sizes | Best for |
 | ------ | ------------ | -------- |
-| **CHT (Core Heating Technology)** | 0.4 / 0.5 / 0.6 / 0.8 / 1.0mm | Most materials: PLA, PETG, ABS, ASA, PA, abrasive-filled filaments |
+| **CHT (Core Heating Technology)** | 0.4 / 0.5 / 0.6 / 0.8 / 1.0mm | Most materials: PLA, PETG, ABS, ASA, TPU, TPE, PVA, BVOH, HIPS, PC, Nylon, PP, PBT, unfilled PC blends, and other non-abrasive filaments |
 | **Standard (non-CHT)** | 0.25 / 0.4mm | Flexible filaments (TPU, TPE) and sensitive composites |
 
 See [Thin Passive Tools](#thin-passive-tools) in the Technical Specifications for full details on each variant.
@@ -276,7 +278,7 @@ The Bondtech INDX PCB is mounted inside the Smart Head and is the central electr
 | Fan | TACHO, FAN+, GND | Supports tachometer feedback |
 | LED | 5V (VBUS), NP OUT, GND | NeoPixel compatible |
 | Endstop | 3V3, SIGNAL, GND | 3.3V logic level |
-| USB | VBUS, DP+, DP−, GND, GND | Supports accessories such as camera or Beacon probe scanner |
+| USB | VBUS, DP+, DP−, GND, GND | Supports accessories such as camera or Beacon probe scanner. **The DP+/DP− silkscreen is swapped — see [USB data pins](#usb-data-pins-are-swapped)** |
 | CAN termination jumper | — | Enable/disable CAN bus termination |
 | CAN Reset jumper | — | Puts the board into DFU mode for firmware flashing; remove after flashing |
 | Communication switch | CAN / USB | Selects between CAN-FD and USB communication modes; must match the switch position on the Link Board |
@@ -371,16 +373,17 @@ A USB cable from the Link Board to your host computer is not included and must b
 
 ### Thin Passive Tools
 
-All Thin Passive Tools are built from hardened steel, contain no electronics or wiring, and use induction heating via the Smart Head. Two variants are available:
+All Thin Passive Tools are built from steel, contain no electronics or wiring, and use induction heating via the Smart Head. Two variants are available:
 
 **CHT (Core Heating Technology): Standard choice for most materials**
 
-Uses Bondtech's patented CHT internal geometry, which splits filament into three thinner strands for faster melting and higher flow rates. Recommended for PLA, PETG, ABS, ASA, PA, and abrasive-filled filaments (Carbon Fiber, Glass Fiber). Not recommended for soft flexible filaments.
+Uses Bondtech's patented CHT internal geometry, which splits filament into three thinner strands for faster melting and higher flow rates. Recommended for PLA, PETG, ABS, ASA, TPU, TPE, PVA, BVOH, HIPS, PC, Nylon, PP, PBT, unfilled PC blends, and other non-abrasive filaments.
+Not recommended for soft flexible filaments.
 
 | Specification | Value |
 | ------------- | ----- |
 | Available nozzle sizes | 0.4 / 0.5 / 0.6 / 0.8 / 1.0mm |
-| Material | Hardened steel |
+| Material | Steel |
 | Compatible filament diameter | 1.75mm |
 | Maximum nozzle temperature | 300°C |
 | Electronics | None |
@@ -388,12 +391,12 @@ Uses Bondtech's patented CHT internal geometry, which splits filament into three
 
 **Standard (non-CHT): For flexible and sensitive materials**
 
-Uses a straight-through melt zone with minimal back-pressure, specifically optimized for soft flexible filaments (TPU, TPE) and sensitive composites. Built to the same hardened steel standard, so it handles abrasive filaments equally well.
+Uses a straight-through melt zone with minimal back-pressure, specifically optimized for soft flexible filaments (TPU, TPE) and sensitive composites. Built to the same steel standard.
 
 | Specification | Value |
 | ------------- | ----- |
 | Available nozzle sizes | 0.25 / 0.4mm |
-| Material | Hardened steel |
+| Material | Steel |
 | Compatible filament diameter | 1.75mm |
 | Maximum nozzle temperature | 300°C |
 | Electronics | None |
@@ -437,7 +440,7 @@ All electronics are pre-installed inside the Smart Head; no internal wiring requ
 - **Endstop**: 3-pin, 3.3V logic level. Pin 1 3V3, Pin 2 SIGNAL, Pin 3 GND
 - **Fan**: 3-pin, supports tachometer feedback. Pin 1 TACHO, Pin 2 FAN+ (PWM 24V), Pin 3 GND
 - **LED**: 3-pin NeoPixel. Pin 1 5V (VBUS), Pin 2 NP OUT, Pin 3 GND
-- **USB**: 5-pin, supports accessories such as a camera or Beacon probe scanner. Pin 1 VBUS (5V), Pin 2 DP+, Pin 3 DP−, Pin 4 GND, Pin 5 GND
+- **USB**: 5-pin, supports accessories such as a camera or Beacon probe scanner. Pin 1 VBUS (5V), Pin 2 DP+, Pin 3 DP−, Pin 4 GND, Pin 5 GND. **The DP+ and DP− labels are swapped relative to the actual signals — see [USB data pins](#usb-data-pins-are-swapped) before wiring anything to this connector**
 - **Built-in accelerometer**: for resonance measurement and automatic input shaper calibration in Klipper
 - **CAN termination jumper**: fitting the jumper enables the 120 Ω end-of-line termination resistor. Fit only on boards at the physical ends of the CAN bus.
 - **CAN reset jumper**: Klipper: short the jumper to enter DFU mode for flashing. RRF: fit the jumper for CAN reset (also resets the CAN address). See the [Duet INDX Toolboard documentation](https://docs.duet3d.com/en/Duet3D_hardware/Duet_3_family/INDX_Toolboard).
@@ -446,6 +449,24 @@ All electronics are pre-installed inside the Smart Head; no internal wiring requ
 Induction heating and contactless IR temperature sensing are handled internally by the INDX VF PCB; no additional wiring or configuration needed.
 
 ![Bondtech INDX PCB pinout](images/bondtech-indx-pcb-pinout.jpg)
+
+##### USB data pins are swapped
+
+> ⚠️ **The DP+ and DP− labels on the USB connector are wrong.** The pin marked **DP+ is electrically DP−**, and the pin marked **DP− is electrically DP+**. This applies to the silkscreen, the pinout image above, and the pin tables in this document. Wire by function, not by label.
+
+So a USB accessory connects like this:
+
+| INDX pin | Marked | Actually is | Connect to |
+| -------- | ------ | ----------- | ---------- |
+| 1 | VBUS | VBUS (5V) | 5V |
+| 2 | DP+ | **DP−** | DATA − |
+| 3 | DP− | **DP+** | DATA + |
+| 4 | GND | GND | Ground |
+| 5 | GND | GND | — |
+
+For a Cartographer V4, whose own wiring guide lists black = Ground, green = DATA +, white = DATA −, that means green goes to the pin marked DP− and white goes to the pin marked DP+. Two users independently found that wiring by the printed labels fails to enumerate and that swapping the pair works.
+
+If a USB accessory isn't detected at all, this is the first thing to check.
 
 **Klipper pin → port mapping** (not exposed in RRF)
 
@@ -567,15 +588,15 @@ Part cooling solutions snap onto the outside of the Smart Head cowlings. Attach 
 
 1. Loosen the screw that holds the INDX Front Cover.
 
-   ![Loosen front cover screw](https://github.com/user-attachments/assets/c57644c6-2b4c-4d02-891c-9f050e8e7851)
+   ![Loosen front cover screw](images/fan-shroud-cover-screw.png)
 
 2. Use an M3×8 screw to secure the INDX Front Cover together with the fan shroud clip.
 
-   ![Fan shroud clip installed](https://github.com/user-attachments/assets/b402a7be-7bbe-470f-b6ea-beee6c911570)
+   ![Fan shroud clip installed](images/fan-shroud-clip.png)
 
 3. With the clip installed, attach the fan shroud to the Front Cover. The shroud has an upper tab that locates into a slot at the top of the Front Cover (highlighted in blue). Align the tab with the slot, then rotate the bottom of the shroud inward until it seats in position.
 
-   ![Fan shroud mounted](https://github.com/user-attachments/assets/9df258fc-fd3e-47cc-bd77-6dbc678d1d25)
+   ![Fan shroud mounted](images/fan-shroud-mounted.png)
 
 #### 2. Mount the Dock
 
@@ -611,14 +632,15 @@ The dock must be positioned so that a parked tool sits **2mm higher** than it do
 **Alignment method**
 
 Use the printable alignment jig ([`INDX_Dock_calibration_tool.stl`](CAD/STL/INDX_Dock_calibration_tool.stl)) placed over the nozzle tool in the toolhead to set the correct height. The printer does not need to be powered on for this step; you are setting the physical dock height manually.
+_Pro tip: you can also use the alignment jig to get exact X alignment of the docks, by moving your printhead to the desired X value before doing the steps below._
 
 1. Place the printed alignment jig over the tool magnets while the tool is in the smart head.
 
-   ![Extra magnet placed on the INDX front trigger surface](images/align1.png)
+   ![Alignment jig fitted over the tool magnets on the Smart Head](images/align1.png)
 
 2. Loosen the bar holding screws in order to let it be adjusted up and down, then slide the smart head toward the tool dock and make sure the alignment jig enters the magnet holes smoothly without the smart head nodding from mechanical strain.
 
-   ![Magnet aligned with tool holder magnet](images/align2.png)
+   ![Alignment jig entering the tool holder magnet holes in the dock](images/align2.png)
 
 3. Secure the dock bar at that height
 
@@ -725,17 +747,17 @@ For RRF, flash and configure the Bondtech INDX PCB following the [Duet INDX Tool
 
 Before loading tools, check that the Tool Dock Activator is correctly installed. It is a small bracket mounted upright on the 15×15 mm aluminium extrusion using an M3×10 screw and an M3 nut. It must be perfectly vertical; this is the component that triggers the INDX latch mechanism during pickup.
 
-![Tool Dock Activator mounted on extrusion](https://github.com/user-attachments/assets/a1d0cd3c-d1e7-40e2-8e72-8514ac7940d6)
+![Tool Dock Activator mounted on extrusion](images/dock-activator-mounted.png)
 
 Check that it is perpendicular to the extrusion:
 
-![Tool Dock Activator vertical alignment](https://github.com/user-attachments/assets/008c117e-538e-4da7-a018-290983842493)
+![Tool Dock Activator vertical alignment](images/dock-activator-vertical.png)
 
 **Load tools into the dock**
 
 One passive tool fits in one dock position. Tools are retained by 3×8 mm bar magnets embedded in both the tool and the dock. The magnets naturally guide the tool into the correct orientation as you bring it close; follow the magnetic pull to seat it.
 
-![Passive tool loaded in dock](https://github.com/user-attachments/assets/a8289d67-da95-4ace-b877-5ad8fead438e)
+![Passive tool loaded in dock](images/dock-tool-loaded.png)
 
 > **Note:** You will set the exact dock position coordinates (`dock_y` and `t*_x`) during the calibration steps later. For now, just seat the tools; the INDX macros handle the rest once configured.
 
@@ -859,6 +881,68 @@ Include them from your `printer.cfg`:
 [include indx/indx-tc-macros.cfg]
 [include indx/indx-cal.cfg]
 ```
+
+##### Required Klipper sections
+
+The INDX macros depend on a few stock Klipper modules. If any of these are missing from your `printer.cfg`, the macros will fail at runtime rather than at startup, which makes the cause hard to spot. Add all of them:
+
+```ini
+[save_variables]
+filename: ~/printer_data/config/indx_vars.cfg
+
+[respond]
+```
+
+`save_variables` stores the state INDX has to survive a restart: the active tool, latch state, per-tool XY/Z offsets, the toolchange counter, and the current speed mode. Without it every macro that reads `printer.save_variables.variables` errors out, and the printer forgets which tool is mounted across reboots. Point `filename` at any writable path in your config directory; the file is created for you.
+
+`respond` provides the `RESPOND` command that every INDX macro uses for console output and prompts.
+
+##### Load cell probe
+
+The Smart Head's load cell is the printer's Z probe, so a `[load_cell_probe]` section is required too. The ADS131M02 that reads the load cell sits on the INDX toolboard, so its pins are addressed through the `indxmcu` MCU:
+
+```ini
+[load_cell_probe]
+sensor_type: ads131m02
+cs_pin: indxmcu:loadcell_cs
+spi_bus: sercom1
+data_ready_pin: indxmcu:loadcell_drdy
+channels: 0
+sample_rate: 500
+z_offset: 0.0
+trigger_force: 100
+speed: 5
+pullback_distance: 0.2
+pullback_speed: 0.3
+samples: 1
+sample_retract_dist: 0.5
+lift_speed: 20
+samples_tolerance: 0.01
+samples_tolerance_retries: 5
+```
+
+The pins are named aliases rather than raw MCU pins, so this config stays valid across INDX PCB revisions.
+
+`trigger_force` is the contact force in grams that counts as a touch, and `z_offset` stays at `0.0` because the nozzle itself is the probe — there is no offset between probe and nozzle to correct for.
+
+`pullback_distance` and `pullback_speed` control what happens immediately after contact: the toolhead retracts a short distance at a slow speed while the load cell keeps sampling, and the tap analysis uses that force curve to work out the exact moment the nozzle touched. Slower and shorter gives a cleaner curve; too slow and every probe costs noticeable time.
+
+`samples: 1` is deliberate. `CAL_Z` does its own convergence and median sampling across many probes (see [Z Offset Calibration](#z-offset-calibration)), so asking the probe to average internally as well would only slow it down.
+
+Two values are missing from the block above on purpose: `counts_per_gram` and `reference_tare_counts`. Those come out of [load cell calibration](#load-cell-calibration) and are written to the `SAVE_CONFIG` block at the bottom of your `printer.cfg` automatically. Don't set them by hand — run the calibration and let it fill them in.
+
+> ⚠️ **This section is Kalico-specific.** Mainline Klipper also has a `[load_cell_probe]`, but it is a different implementation and does **not** accept `pullback_distance`, `pullback_speed`, `disable_pullback_move` or `drift_safety_limit`. Its `force_safety_limit` also has a minimum of 100, so a value of `0` is rejected where Kalico allows it. On mainline Klipper, drop the two pullback lines; everything else above is common to both.
+
+**Running a Beacon or Cartographer as well?**
+
+The load cell registers itself as the printer's probe, so a scanning probe on the same machine has to be told not to. For Beacon, add both of these to your `[beacon]` section:
+
+```ini
+register_as_probe: false
+prefixed_probe_commands: true
+```
+
+For Cartographer, add only the first line to `[cartographer]` — it will reject `prefixed_probe_commands`.
 
 ##### Automated dock X measurement (built in)
 
@@ -1020,12 +1104,58 @@ Run the commands in order from the Kalico/Klipper console:
 
 `INDX_CALIBRATE` and `INDX_FAN_CALIBRATE` characterise the nozzle/tool and the part cooling fan — run them once per tool type and cooling setup. Because these values feed the safety model rather than the control loop, don't hand-edit them afterwards; re-run the routine if the tool type or part cooling setup changes.
 
+##### Calibrating a CPAP or other high-flow part cooling
+
+CPAP blowers need more care than the dual 40×10 fans, and getting this wrong is the most common cause of a printer that runs fine until part cooling kicks in and then shuts down a minute later. That shutdown is the safety model working correctly: the fan is removing more heat than the model predicts, the divergence exceeds `max_model_error`, and the printer stops.
+
+**Your fan must respond across the whole commanded range.** `INDX_FAN_CALIBRATE` fits a power law with a negative exponent:
+
+```
+part_cooling_fan_a × fan_speed ^ (−part_cooling_fan_k)
+```
+
+which means the fit is most sensitive at *low* fan speeds. If your fan config uses `off_below`, every commanded speed under that threshold sets the fan to zero, so the calibration records "5% commanded, no cooling measured" exactly where it matters most and the fitted curve is wrong across the entire range.
+
+Use `min_power` rather than `off_below` for a blower. `min_power` rescales the commanded range onto the range the blower can actually turn in, so commanded speed keeps tracking real airflow all the way down:
+
+```ini
+[fan]
+pin: ...
+min_power: 0.14       # not off_below — set to your blower's real minimum
+kick_start_time: 0.1
+cycle_time: 0.0003
+```
+
+**Then calibrate in this order**, with the hose attached and the duct in its final configuration:
+
+1. `INDX_CALIBRATE` with the part cooling fan **off**, to fit the base thermal model
+2. `INDX_FAN_CALIBRATE BREAKS=50 MIN_SPEED=0.01 HOLD_TIME=20`, with the nozzle at print height (around 0.2 mm) over a clean build plate
+3. `SAVE_CONFIG`
+
+Both details in step 2 matter. Calibrating without the hose, or with the nozzle up in free air, measures airflow that doesn't match what the nozzle sees while printing — and the model is only as good as the conditions it was fitted in.
+
+**Watch the fan through the sweep.** It should visibly change speed at every step. If it doesn't, the fan config is still truncating the low end and the fit will be wrong again no matter how many times you re-run it.
+
+> ⚠️ **Don't raise `max_model_error` to stop the shutdowns.** A passive tool has no thermistor, so model divergence is the main thing standing between a misbehaving coil and a fire. Raising the limit hides the symptom and removes the protection. If the model keeps diverging, the fan calibration is wrong — fix that instead.
+
 **Filament heat capacity.** Different filaments carry heat away from the nozzle at different rates, so the safety model also needs to know which filament is loaded. You set this when you load filament into a tool, not during the one-time calibration above:
 
 - **Measure it** — `INDX_LOAD_FILAMENT` feeds and primes filament while measuring the actual heat capacity, then (with `APPLY=1`) writes it to your config. Most accurate; run `SAVE_CONFIG` to keep it.
 - **Set it by type** — `INDX_SET_MODEL_PARAMS FILAMENT_DENSITY=… FILAMENT_HEAT_CAPACITY=…` applies known values for a material without measuring.
 
 The `LOAD_FILAMENT` macro wraps both of these together with tool selection — see [Loading Filament into Tools](#loading-filament-into-tools).
+
+**The model only uses the product.** Density and heat capacity are always multiplied together, never used separately, so how the value is split between the two doesn't matter — only that `density × heat_capacity` is right for the material. This is why a measured run reports `model_filament_density = 1.0000`: the measurement can only recover the product, so it pins density to 1 and folds everything into heat capacity. That isn't a failed measurement.
+
+**Values are remembered per tool.** `LOAD_FILAMENT TOOL=n TYPE=…` records the filament against that tool, and every subsequent pickup of it restores those values before the tool heats. Without that, the model would keep whichever material was loaded last on any tool, which on a multi-material print is the wrong filament for most of the job. You can set it directly for a tool at any time:
+
+```gcode
+SET_TOOL_FILAMENT TOOL=1 DENSITY=1.21 HEAT_CAPACITY=1.80
+```
+
+Tools that have never been loaded through `LOAD_FILAMENT` or `SET_TOOL_FILAMENT` simply leave the model untouched on pickup.
+
+> ⚠️ A measured run (`MEASURE=1`) applies its result globally rather than to the tool it measured, because the measurement is written by the firmware rather than the macro. After `SAVE_CONFIG` and a restart, record it against the tool with `SET_TOOL_FILAMENT TOOL=n DENSITY=1.0 HEAT_CAPACITY=<the measured value>` so it survives toolchanges.
 
 ---
 
@@ -1047,14 +1177,14 @@ Start with **no tool on the Smart Head** and run:
 CALIBRATE_LOAD_CELL
 ```
 
-This homes X and Y, opens the latch, and tares the empty head. Now **seat a passive tool on the Smart Head by hand**, then lock it and calibrate against the known locking force (default 1600 g):
+This homes X and Y, opens the latch (and records soft-state Open), and tares the empty head. Now **seat a passive tool on the Smart Head by hand** — the tool **must be empty** (no filament in the extruder gears) — then calibrate against the known locking force (default 1600 g). `CALIBRATE_LOAD_CELL_APPLY` locks, samples, then unlocks again so you can remove the tool by hand.
 
 ```gcode
 CALIBRATE_LOAD_CELL_APPLY GRAMS=1600
 SAVE_CONFIG
 ```
 
-Prefer the console? Run `LOAD_CELL_CALIBRATE`, then `TARE` with no tool, seat a tool and lock the latch, then `CALIBRATE GRAMS=1600`, `ACCEPT`, and `SAVE_CONFIG`.
+Prefer the console? Run `LOAD_CELL_CALIBRATE`, then `TARE` with no tool, seat an **empty** tool and lock the latch, then `CALIBRATE GRAMS=1600`, `ACCEPT`, unlock the latch, and `SAVE_CONFIG`.
 
 Restart, then home the printer (`G28`) — Z now probes with the load cell.
 
@@ -1068,8 +1198,11 @@ Before any tool changes can happen, you need to find and save the exact dock pos
 | -------- | ------- |
 | `variable_t{n}_x` | X coordinate of the tool holder centre (mm) |
 | `variable_t{n}_dock_y` | Y coordinate where the tool is fully seated (mm) |
+| `variable_dock_dir` | Y sign into the dock: `-1` front (min Y), `+1` rear (max Y). Default `-1`. |
 
-The trigger line (`dock_y + trigger_offset`) is derived automatically; you only set `dock_y`.
+The trigger line (`dock_y - dock_dir * trigger_offset`) is derived automatically; you only set `dock_y`.
+
+For a rear dock, set `variable_dock_dir: 1` and put `clearance_y` on the bed side of the tools.
 
 > ⚠️ **Take this slow.** Moving the Smart Head into the dock area without verified coordinates is one of the most crash-prone steps in the entire INDX setup. A misaligned approach at speed can damage the Smart Head, the passive tools, or the dock itself.
 >
@@ -1230,6 +1363,7 @@ CAL_Z
 
 Prerequisites:
 - Printer homed (homes automatically if not)
+- **No filament available to the extruder gears in any tool** — if filament is loaded, latch engage moves during pickup can spike load-cell readings and cause calibration to fail.
 
 Per tool, the macro:
 1. Picks up the tool
@@ -1276,6 +1410,8 @@ Tool change motion speed and acceleration are controlled by three preset modes: 
 
 **Sport** uses the full `max_velocity` and `max_accel` from your `printer.cfg`. This gives the fastest possible toolchange times for your specific printer. Make sure your configured limits are within what your printer can actually handle; if `max_velocity` or `max_accel` are set too high, Sport mode will expose that immediately. Input shaper should be tuned before running Sport; without it, high-acceleration toolchange moves can cause the steppers to lose steps.
 
+Mode switching also sets StealthChop or SpreadCycle on every configured XY TMC driver (`tmc2208`, `tmc2209`, `tmc2130`, `tmc2240`, or `tmc5160`). On AWD setups, that includes `stepper_x1` and `stepper_y1` when present. Each driver is read from your `printer.cfg` individually, so mixed driver setups are handled correctly. If none of your XY steppers use a supported driver, the mode still changes speed and acceleration and INDX reports that the chopper mode was left untouched.
+
 The active mode persists across reboots. To change it, run the macro from the console or add it to your start G-code:
 
 ```gcode
@@ -1313,7 +1449,7 @@ LOAD_FILAMENT TOOL=0 TYPE=PLA
 ```
 
 - **`TOOL=<n>`** — which tool to load (it is picked up automatically).
-- **`TYPE=<material>`** — applies a density + heat-capacity preset and a default load temperature. Built-in types: `PLA`, `PETG`, `ABS`, `ASA`, `PA`, `PC`, `TPU`. Edit the `filament_presets` table in `indx-cal.cfg` to add materials or tune values.
+- **`TYPE=<material>`** — applies a density + heat-capacity preset and a default load temperature. Built-in types: `PLA`, `PETG`, `ABS`, `ASA`, `PA`, `PC`, `TPU`. Edit the `filament_presets` table in `indx-cal.cfg` to add materials or tune values. Presets may also set an optional `speed` (mm/s) for the feed/prime step; `TPU` uses 2 mm/s so soft filament does not buckle during guided load.
 - **`TEMP=<°C>`** *(optional)* — override the preset load temperature.
 - **`MEASURE=1`** *(optional)* — measure this filament's actual heat capacity while loading instead of using the preset (most accurate). Run `SAVE_CONFIG` afterwards to keep it.
 
@@ -1336,7 +1472,7 @@ Either approach significantly reduces the risk of tubes interfering with docked 
 
 **Flexible filaments (TPU and similar)**
 
-Keep the filament path as short as possible. Long Bowden paths cause flex filament to buckle rather than feed. Where possible, feed directly into the tool without a Bowden tube, or use a very short, straight tube. Avoid sharp bends in the path.
+Keep the filament path as short as possible. Long Bowden paths cause flex filament to buckle rather than feed. Where possible, feed directly into the tool without a Bowden tube, or use a very short, straight tube. Avoid sharp bends in the path. `LOAD_FILAMENT TYPE=TPU` also feeds slower than other presets (2 mm/s); tune `speed` in `filament_presets` if needed.
 
 ### Performing Tool Changes
 
@@ -1375,7 +1511,7 @@ Common slicers used with INDX include PrusaSlicer, OrcaSlicer, SuperSlicer, and 
 
   **OrcaSlicer**
 
-  Add under Printer Settings → Machine G-code → Tool change G-code:
+  Add under Printer Settings → Machine G-code → Change filament G-code:
   ```gcode
   T{next_extruder}
   M400
