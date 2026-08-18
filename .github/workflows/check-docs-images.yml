@@ -37,9 +37,16 @@ jobs:
                           '    assets are permission checked and break for readers who lack\n'
                           '    access, and they render fine for whoever pasted them in.')
                   elif not ref.startswith('#'):
-                      target = urllib.parse.unquote(ref).split('#')[0]
+                      # Relative paths resolve against the directory of the markdown
+                      # file, not the repo root. A leading slash means repo root.
+                      rel = urllib.parse.unquote(ref).split('#')[0]
+                      if rel.startswith('/'):
+                          target = os.path.normpath(rel.lstrip('/'))
+                      else:
+                          target = os.path.normpath(
+                              os.path.join(os.path.dirname(path), rel))
                       if not os.path.isfile(target):
-                          problems.append(f'{path}: missing image file {target}')
+                          problems.append(f'{path}: missing image file {ref}')
 
           if problems:
               print('Documentation image check failed:\n')
