@@ -1198,8 +1198,11 @@ Before any tool changes can happen, you need to find and save the exact dock pos
 | -------- | ------- |
 | `variable_t{n}_x` | X coordinate of the tool holder centre (mm) |
 | `variable_t{n}_dock_y` | Y coordinate where the tool is fully seated (mm) |
+| `variable_dock_dir` | Y sign into the dock: `-1` front (min Y), `+1` rear (max Y). Default `-1`. |
 
-The trigger line (`dock_y + trigger_offset`) is derived automatically; you only set `dock_y`.
+The trigger line (`dock_y - dock_dir * trigger_offset`) is derived automatically; you only set `dock_y`.
+
+For a rear dock, set `variable_dock_dir: 1` and put `clearance_y` on the bed side of the tools.
 
 > ⚠️ **Take this slow.** Moving the Smart Head into the dock area without verified coordinates is one of the most crash-prone steps in the entire INDX setup. A misaligned approach at speed can damage the Smart Head, the passive tools, or the dock itself.
 >
