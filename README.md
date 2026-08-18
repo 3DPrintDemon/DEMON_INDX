@@ -1145,6 +1145,18 @@ Both details in step 2 matter. Calibrating without the hose, or with the nozzle 
 
 The `LOAD_FILAMENT` macro wraps both of these together with tool selection — see [Loading Filament into Tools](#loading-filament-into-tools).
 
+**The model only uses the product.** Density and heat capacity are always multiplied together, never used separately, so how the value is split between the two doesn't matter — only that `density × heat_capacity` is right for the material. This is why a measured run reports `model_filament_density = 1.0000`: the measurement can only recover the product, so it pins density to 1 and folds everything into heat capacity. That isn't a failed measurement.
+
+**Values are remembered per tool.** `LOAD_FILAMENT TOOL=n TYPE=…` records the filament against that tool, and every subsequent pickup of it restores those values before the tool heats. Without that, the model would keep whichever material was loaded last on any tool, which on a multi-material print is the wrong filament for most of the job. You can set it directly for a tool at any time:
+
+```gcode
+SET_TOOL_FILAMENT TOOL=1 DENSITY=1.21 HEAT_CAPACITY=1.80
+```
+
+Tools that have never been loaded through `LOAD_FILAMENT` or `SET_TOOL_FILAMENT` simply leave the model untouched on pickup.
+
+> ⚠️ A measured run (`MEASURE=1`) applies its result globally rather than to the tool it measured, because the measurement is written by the firmware rather than the macro. After `SAVE_CONFIG` and a restart, record it against the tool with `SET_TOOL_FILAMENT TOOL=n DENSITY=1.0 HEAT_CAPACITY=<the measured value>` so it survives toolchanges.
+
 ---
 
 **Part 3: Configuration**
