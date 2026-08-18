@@ -1,0 +1,57 @@
+name: Check macros
+
+on:
+  push:
+    paths:
+      - 'macros/**'
+      - '.github/workflows/check-macros.yml'
+  pull_request:
+    paths:
+      - 'macros/**'
+  workflow_dispatch:
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Jinja2
+        run: pip install --quiet jinja2
+
+      - name: Every gcode block must compile as a Klipper template
+        run: |
+          python3 - <<'EOF'
+          import glob, re, sys, jinja2
+
+          # Same delimiters Klipper's gcode_macro uses. Anything that fails here
+          # stops Klipper from starting, so a bad macro is a dead printer at boot,
+          # not a runtime warning. Note that '#' comments are NOT stripped before
+          # the template is compiled: writing a Jinja delimiter inside a comment
+          # is still parsed.
+          env = jinja2.Environment('{%', '%}', '{', '}')
+
+          problems = []
+          checked = 0
+          for path in sorted(glob.glob('macros/*.cfg')):
+              src = open(path, encoding='utf-8').read()
+              for part in re.split(r'(?m)^\[', src)[1:]:
+                  header = part.split(']')[0]
+                  body = part[len(header) + 1:]
+                  m = re.search(r'(?m)^gcode:', body)
+                  if not m:
+                      continue
+                  checked += 1
+                  try:
+                      env.from_string(body[m.end():])
+                  except jinja2.TemplateSyntaxError as e:
+                      problems.append(
+                          f'{path}: [{header}] line {e.lineno}: {e.message}')
+
+          if problems:
+              print('Macro template check failed:\n')
+              for p in problems:
+                  print('  - ' + p)
+              sys.exit(1)
+          print(f'All {checked} gcode blocks compile.')
+          EOF
