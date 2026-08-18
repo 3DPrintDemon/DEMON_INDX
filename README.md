@@ -1104,6 +1104,40 @@ Run the commands in order from the Kalico/Klipper console:
 
 `INDX_CALIBRATE` and `INDX_FAN_CALIBRATE` characterise the nozzle/tool and the part cooling fan — run them once per tool type and cooling setup. Because these values feed the safety model rather than the control loop, don't hand-edit them afterwards; re-run the routine if the tool type or part cooling setup changes.
 
+##### Calibrating a CPAP or other high-flow part cooling
+
+CPAP blowers need more care than the dual 40×10 fans, and getting this wrong is the most common cause of a printer that runs fine until part cooling kicks in and then shuts down a minute later. That shutdown is the safety model working correctly: the fan is removing more heat than the model predicts, the divergence exceeds `max_model_error`, and the printer stops.
+
+**Your fan must respond across the whole commanded range.** `INDX_FAN_CALIBRATE` fits a power law with a negative exponent:
+
+```
+part_cooling_fan_a × fan_speed ^ (−part_cooling_fan_k)
+```
+
+which means the fit is most sensitive at *low* fan speeds. If your fan config uses `off_below`, every commanded speed under that threshold sets the fan to zero, so the calibration records "5% commanded, no cooling measured" exactly where it matters most and the fitted curve is wrong across the entire range.
+
+Use `min_power` rather than `off_below` for a blower. `min_power` rescales the commanded range onto the range the blower can actually turn in, so commanded speed keeps tracking real airflow all the way down:
+
+```ini
+[fan]
+pin: ...
+min_power: 0.14       # not off_below — set to your blower's real minimum
+kick_start_time: 0.1
+cycle_time: 0.0003
+```
+
+**Then calibrate in this order**, with the hose attached and the duct in its final configuration:
+
+1. `INDX_CALIBRATE` with the part cooling fan **off**, to fit the base thermal model
+2. `INDX_FAN_CALIBRATE BREAKS=50 MIN_SPEED=0.01 HOLD_TIME=20`, with the nozzle at print height (around 0.2 mm) over a clean build plate
+3. `SAVE_CONFIG`
+
+Both details in step 2 matter. Calibrating without the hose, or with the nozzle up in free air, measures airflow that doesn't match what the nozzle sees while printing — and the model is only as good as the conditions it was fitted in.
+
+**Watch the fan through the sweep.** It should visibly change speed at every step. If it doesn't, the fan config is still truncating the low end and the fit will be wrong again no matter how many times you re-run it.
+
+> ⚠️ **Don't raise `max_model_error` to stop the shutdowns.** A passive tool has no thermistor, so model divergence is the main thing standing between a misbehaving coil and a fire. Raising the limit hides the symptom and removes the protection. If the model keeps diverging, the fan calibration is wrong — fix that instead.
+
 **Filament heat capacity.** Different filaments carry heat away from the nozzle at different rates, so the safety model also needs to know which filament is loaded. You set this when you load filament into a tool, not during the one-time calibration above:
 
 - **Measure it** — `INDX_LOAD_FILAMENT` feeds and primes filament while measuring the actual heat capacity, then (with `APPLY=1`) writes it to your config. Most accurate; run `SAVE_CONFIG` to keep it.
