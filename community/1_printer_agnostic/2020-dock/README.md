@@ -6,13 +6,8 @@ The dock has 5mm of additional thickness compared to the original 1515 dock to m
 
 There really isn't any reason to use this dock other than "I had a spare 2020 extrusion and didn't want to buy a 1515"
 
-## Assembly
+There's also an adapted version of the [1515 dock magnet jig](../magnet-jig/README.md) to fit the new dock geometry.
 
-1. Snap both small magnets to a passive tool to get their correct orientation
-2. Pick up one magnet and insert it into the magnet insertion tool
-3. Triple check magnet orientation. Pointing the magnet towards the passive tool's magnets you should feel them repelling each other.
-4. Use a pipe wrench to insert the magnet
-5. After inserting both magnets, quadruple check the orientation (aka test-fit the passive tool)
-6. Use the alignment tool to push down the magnets flush
-7. Use a magnetic M3x6 SHCS to push the magnets down a few fractions of a millimeter more,
-   so that the passive tool's magnets don't directly touch the dock's magnets anymore
+# Assembly
+
+See [1515 dock magnet jig](../magnet-jig/README.md)
