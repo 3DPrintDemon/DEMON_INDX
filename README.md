@@ -248,7 +248,7 @@ INDX uses a modular part cooling system. Cooling solutions snap onto the outside
 
 | Option | Description |
 | ------ | ----------- |
-| **Dual 40×10 fans** | Two axial fans mounted symmetrically for balanced airflow around the nozzle |
+| **Dual 40×10 fans** | Two radial blower fans mounted symmetrically for balanced airflow around the nozzle |
 | **CPAP** | High-flow airflow from a remote CPAP blower unit, routed via a flexible tube to the Smart Head, keeping weight off the gantry |
 
 The right choice depends on your materials and print speed requirements. The dual 40×10 connect to the part cooling fan output on the Bondtech INDX PCB. The CPAP blower is a remote unit mounted elsewhere on the printer and connects to your main board instead; only the airflow tube routes to the Smart Head.
