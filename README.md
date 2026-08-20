@@ -586,6 +586,8 @@ Part cooling solutions snap onto the outside of the Smart Head cowlings. Attach 
 
 **Installing the fan shroud clip**
 
+The clip is the interface between a fan shroud and the Front Cover, and there is a left and a right one: [`INDX_Part_Cooling_Interface_left.stl`](CAD/STL/INDX_Part_Cooling_Interface_left.stl) and [`INDX_Part_Cooling_Interface_right.stl`](CAD/STL/INDX_Part_Cooling_Interface_right.stl). Print both before starting, and repeat these steps for each side.
+
 1. Loosen the screw that holds the INDX Front Cover.
 
    ![Loosen front cover screw](images/fan-shroud-cover-screw.png)
@@ -1611,6 +1613,8 @@ These are print-ready STLs of the individual parts. They are all derived from th
 | [`INDX_Front_cover_left.stl`](CAD/STL/INDX_Front_cover_left.stl) | Smart Head cover | Front cover, left half |
 | [`INDX_Front_cover_right.stl`](CAD/STL/INDX_Front_cover_right.stl) | Smart Head cover | Front cover, right half |
 | [`INDX_PCB_Cover.stl`](CAD/STL/INDX_PCB_Cover.stl) | PCB cover | Protective cover for the Bondtech INDX PCB |
+| [`INDX_Part_Cooling_Interface_left.stl`](CAD/STL/INDX_Part_Cooling_Interface_left.stl) | Part cooling mount | Fan shroud clip, left. Attaches a fan shroud to the left Front Cover; see [Install the Smart Head](#1-install-the-smart-head) |
+| [`INDX_Part_Cooling_Interface_right.stl`](CAD/STL/INDX_Part_Cooling_Interface_right.stl) | Part cooling mount | Fan shroud clip, right. Attaches a fan shroud to the right Front Cover |
 | [`INDX_4010_Duct_Left.stl`](CAD/STL/INDX_4010_Duct_Left.stl) | Part cooling (4010) | Dual 40×10 blower duct, left half |
 | [`INDX_4010_Duct_Right.stl`](CAD/STL/INDX_4010_Duct_Right.stl) | Part cooling (4010) | Dual 40×10 blower duct, right half |
 | [`INDX_CPAP_Duct_Left.stl`](CAD/STL/INDX_CPAP_Duct_Left.stl) | Part cooling (CPAP) | CPAP duct, left half |
