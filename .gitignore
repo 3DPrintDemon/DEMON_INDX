@@ -1,2 +1,4 @@
 # Editor workspace files
 *.code-workspace
+
+.DS_Store
