@@ -1,6 +1,6 @@
 # DEMON INDX MACROS
 
-These differ from the Stock Bondtech ones a little here & there but essentially they're mostly the same in their function.
+These differ from the stock Bondtech ones a little here & there but essentially they're mostly the same in their function.
 
 Most changes are to help facilitate the dock sensors. All macro files found here need to be installed & used together. If you don't have any dock sensors thats ok as they are dormant by default in the modified index.cfg file.
 
