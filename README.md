@@ -1515,9 +1515,11 @@ Common slicers used with INDX include PrusaSlicer, OrcaSlicer, SuperSlicer, and 
 
   Add under Printer Settings → Machine G-code → Change filament G-code:
   ```gcode
-  T{next_extruder}
+  CHANGE_TOOL TOOL={next_extruder} TEMP={nozzle_temperature[next_extruder]}
   M400
   ```
+
+  `TEMP=` tells the toolchange what the incoming tool should heat to. Without it the macro can only fall back to the outgoing tool's temperature, which is correct when both tools print at the same temperature and wrong when they don't: the new tool gets brought to the old filament's temperature and only corrected afterwards. Passing it heats each tool to its own temperature once, with no overshoot and no second wait.
 
   **PrusaSlicer / SuperSlicer**
 
@@ -1535,6 +1537,14 @@ Common slicers used with INDX include PrusaSlicer, OrcaSlicer, SuperSlicer, and 
   ```
 
   This selects the next tool, moves to the wipe tower (if one is enabled) so the new (initially cold) tool heats and purges there, then sets the new tool's temperature and waits for the induction coil to bring it up to temperature before printing resumes.
+
+  This snippet works as written and needs no changes. If your tools print at different temperatures you can optionally replace the `T{next_extruder}` line with the form below, which heats the new tool straight to its own temperature instead of reaching the old tool's first and correcting afterwards:
+
+  ```gcode
+  CHANGE_TOOL TOOL={next_extruder} TEMP={temperature[next_extruder]}
+  ```
+
+  Keep the `M104` and `TEMPERATURE_WAIT` lines either way; they cost nothing once the temperature is already correct.
 
   **SuperSlicer** uses the same template engine and variable names as PrusaSlicer, so this snippet works unchanged in both. (PrusaSlicer's older `[...]` placeholder form also works in both if you prefer it, e.g. `M104 S[temperature[next_extruder]]`.)
 
