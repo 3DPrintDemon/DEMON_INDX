@@ -911,29 +911,36 @@ spi_bus: sercom1
 data_ready_pin: indxmcu:loadcell_drdy
 channels: 0
 sample_rate: 500
-z_offset: 0.0
-trigger_force: 100
-speed: 5
-pullback_distance: 0.2
+z_offset: -0.15
+force_safety_limit: 3200
+trigger_force: 150
+speed: 2
+retry_speed: 1.0
+lift_speed: 15
+pullback_distance: 0.35
 pullback_speed: 0.3
-samples: 1
-sample_retract_dist: 0.5
-lift_speed: 20
-samples_tolerance: 0.01
-samples_tolerance_retries: 5
+samples: 3
+samples_result: median
+sample_retract_dist: 0.35
+samples_tolerance: 0.05
+samples_tolerance_retries: 3
 ```
 
 The pins are named aliases rather than raw MCU pins, so this config stays valid across INDX PCB revisions.
 
-`trigger_force` is the contact force in grams that counts as a touch, and `z_offset` stays at `0.0` because the nozzle itself is the probe — there is no offset between probe and nozzle to correct for.
+`trigger_force` is the contact force in grams that counts as a touch.
+
+> ⚠️ **`z_offset` is a per-machine value, not a constant.** The nozzle is the probe, so there is no probe-to-nozzle distance to correct for, but the tool and Smart Head still deflect slightly under the trigger force before contact is registered. `z_offset` takes that out. The value above came from a working machine and is a reasonable starting point; treat it as something to tune for yours rather than a number to copy. Too little and your first layer sits high, too much and the nozzle digs in.
 
 `pullback_distance` and `pullback_speed` control what happens immediately after contact: the toolhead retracts a short distance at a slow speed while the load cell keeps sampling, and the tap analysis uses that force curve to work out the exact moment the nozzle touched. Slower and shorter gives a cleaner curve; too slow and every probe costs noticeable time.
 
-`samples: 1` is deliberate. `CAL_Z` does its own convergence and median sampling across many probes (see [Z Offset Calibration](#z-offset-calibration)), so asking the probe to average internally as well would only slow it down.
+`samples: 3` with `samples_result: median` takes three probes and keeps the middle one, which throws out a single bad reading rather than averaging it in. That matters most for `G28 Z`, where one probe decides your Z origin. `CAL_Z` runs its own convergence and median sampling across many probes on top of this (see [Z Offset Calibration](#z-offset-calibration)), so the two are not redundant; the probe-level median cleans up each individual reading that the higher-level sampling then works from.
+
+`speed: 2` and `retry_speed: 1.0` are slow on purpose. A faster approach overshoots the trigger point before the load cell reacts, which both marks the bed and reads high.
 
 Two values are missing from the block above on purpose: `counts_per_gram` and `reference_tare_counts`. Those come out of [load cell calibration](#load-cell-calibration) and are written to the `SAVE_CONFIG` block at the bottom of your `printer.cfg` automatically. Don't set them by hand — run the calibration and let it fill them in.
 
-> ⚠️ **This section is Kalico-specific.** Mainline Klipper also has a `[load_cell_probe]`, but it is a different implementation and does **not** accept `pullback_distance`, `pullback_speed`, `disable_pullback_move` or `drift_safety_limit`. Its `force_safety_limit` also has a minimum of 100, so a value of `0` is rejected where Kalico allows it. On mainline Klipper, drop the two pullback lines; everything else above is common to both.
+> ⚠️ **This section is Kalico-specific.** Mainline Klipper also has a `[load_cell_probe]`, but it is a different implementation and does **not** accept `pullback_distance`, `pullback_speed`, `disable_pullback_move` or `drift_safety_limit`. On mainline Klipper, drop the two pullback lines; everything else above is common to both. Note also that mainline clamps `force_safety_limit` to a minimum of 100 where Kalico allows lower values, so a config written for one is not guaranteed to load on the other.
 
 **Running a Beacon or Cartographer as well?**
 
