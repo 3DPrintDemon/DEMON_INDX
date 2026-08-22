@@ -4,6 +4,10 @@
 
 Add dock sensing to your INDX system! Use this modified standard INDX dock so installs & dock placement DO NOT change! You just need a MCU to manage the docks & a cable run from the docks to said MCU.
 
+<br>
+
+NOTE: Requires [DEMON_INDX](https://github.com/3DPrintDemon/DEMON_INDX/tree/main/macros) macros
+
 # BOM
 
 - x1 (or more) MCU(s) capable of handling the amount of tools & dock sensors you have.
