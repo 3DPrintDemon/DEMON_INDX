@@ -8,6 +8,28 @@ Add dock sensing to your INDX system! Use this modified standard INDX dock so in
 
 NOTE: Requires [DEMON_INDX](https://github.com/3DPrintDemon/DEMON_INDX/tree/main/macros) macros
 
+<br>
+
+This system allows active tool sensing with load cell confirmation for all attached docks with simple & accurate switch connection to a non-critical MCU. 
+
+DEMON_DOCKS will auto scan for empty docks at startup & disable sensing for those docks. They can be added back into active docks (or removed again) at runtime by command/macro button. The docks can be set to warn only of a potential problem, raise errors if not printing, PAUSE the print if printing, emergency stop if not printing, or emergency stop when printing. 
+
+The load cell dock/undock confirmation can be set on/off at runtime.
+
+The system warns of:
+
+- Undocked tools at startup that will be ignored
+- ignored docks during tool changes
+- inactive tools undocked at any time
+- problems during non-printing operations
+- load cell readings out of range
+- docking failures - printing & non-printing
+- pickup (undocking) failures - printing & non-printing
+
+DEMON_DOCKS then takes specified actions for each type of occurrence.
+
+It can even pause a tool change while printing if a problem is detected!
+ 
 # BOM
 
 - x1 (or more) MCU(s) capable of handling the amount of tools & dock sensors you have.
