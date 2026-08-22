@@ -57,7 +57,14 @@ It can even pause a tool change while printing if a problem is detected!
 
 <br>
 
+# Important Slicer Setting
+
+For these macros to work effectively you need to go to your Printer Settings / Multilateral tab & check "Tool change on wipe tower"
+
+<img width="729" height="541" alt="Orca Purge" src="https://github.com/user-attachments/assets/78cc94fd-bdf6-45dd-bb05-e5b87061409d" />
+
 # Slicer Machine G-code For DEMON_INDX_EXTRAS.cfg
+
 
 These are the sections to add to ORCA slicer:
 
