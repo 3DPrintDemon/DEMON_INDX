@@ -4,10 +4,12 @@ on:
   push:
     paths:
       - 'macros/**'
+      - '!macros/rrf/**'
       - '.github/workflows/check-macros.yml'
   pull_request:
     paths:
       - 'macros/**'
+      - '!macros/rrf/**'
   workflow_dispatch:
 
 jobs:
