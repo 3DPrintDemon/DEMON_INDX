@@ -73,6 +73,7 @@ Machine Start G-code:
 SET_PRINT_STATS_INFO TOTAL_LAYER=[total_layer_count]
 M104 S0  ; Stops the slicer from sending temp waits separately
 M140 S0
+_TOOL_CHECK_START
 PRINT_START EXTRUDER=[nozzle_temperature_initial_layer] TOOL={initial_tool} BED=[bed_temperature_initial_layer_single]
 ```
 
