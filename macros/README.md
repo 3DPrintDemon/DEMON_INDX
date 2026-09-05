@@ -29,7 +29,7 @@ Come & join the community! We've launched Demon Discord, help us start building 
 
 Add dock sensing to your INDX system! Use this modified standard INDX dock so installs & dock placement DO NOT change! You just need a MCU to manage the docks & a cable run from the docks to said MCU.
 
-<img width="4032" height="3024" alt="INDX DEMON DOCK" src="/images/Demon_Dock.jpeg" />
+<img width="4032" height="3024" alt="Demon_Dock" src="/images/Demon_Dock.jpeg" />
 
 This system allows active tool sensing with load cell confirmation for all attached docks with simple & accurate switch connection to a non-critical MCU. 
 
@@ -61,7 +61,7 @@ It can even pause a tool change while printing if a problem is detected!
 
 For these macros to work effectively you need to go to your Printer Settings / Multilateral tab & check "Tool change on wipe tower"
 
-<img width="729" height="541" alt="Orca Purge" src="/images/Slicer.png" />
+<img width="729" height="541" alt="Slicer" src="/images/Slicer.png" />
 
 # Slicer Machine G-code For DEMON_INDX_EXTRAS.cfg
 
