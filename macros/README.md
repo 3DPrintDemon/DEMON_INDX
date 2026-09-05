@@ -97,7 +97,8 @@ M117 Layer {layer_num+1}/[total_layer_count] : {filament_settings_id[0]}
 
 Filament Change G-code:
 ```
-T{next_extruder}
+CHANGE_TOOL TOOL={next_extruder} TEMP={nozzle_temperature[next_extruder]}
+M400
 ```
 
 Pause G-code:
