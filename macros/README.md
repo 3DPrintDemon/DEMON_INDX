@@ -13,7 +13,7 @@ These macros also require [KAMP_LiTE](https://github.com/3DPrintDemon/KAMP_LiTE/
 Come & join the community! We've launched Demon Discord, help us start building a fantastic user focused resource for help & support from other users, or simply chat & show off your machine & your latest prints!
 
 <p align="left">
-    <img width="500" alt="Demon_Discord" src="https://github.com/user-attachments/assets/980b8b69-f78b-43b1-be27-cc1236fcf794" />
+    <img width="500" alt="Demon_Discord" src="/images/Demon_Discord.png" />
     <https://discord.gg/KEbxw22AD4>
 </p>
 
@@ -29,7 +29,7 @@ Come & join the community! We've launched Demon Discord, help us start building 
 
 Add dock sensing to your INDX system! Use this modified standard INDX dock so installs & dock placement DO NOT change! You just need a MCU to manage the docks & a cable run from the docks to said MCU.
 
-<img width="4032" height="3024" alt="INDX DEMON DOCK" src="https://github.com/user-attachments/assets/d8f38666-45f0-4694-b0a7-2330c001832c" />
+<img width="4032" height="3024" alt="INDX DEMON DOCK" src="/images/Demon_Dock.jpeg" />
 
 This system allows active tool sensing with load cell confirmation for all attached docks with simple & accurate switch connection to a non-critical MCU. 
 
@@ -61,7 +61,7 @@ It can even pause a tool change while printing if a problem is detected!
 
 For these macros to work effectively you need to go to your Printer Settings / Multilateral tab & check "Tool change on wipe tower"
 
-<img width="729" height="541" alt="Orca Purge" src="https://github.com/user-attachments/assets/78cc94fd-bdf6-45dd-bb05-e5b87061409d" />
+<img width="729" height="541" alt="Orca Purge" src="/images/Slicer.png" />
 
 # Slicer Machine G-code For DEMON_INDX_EXTRAS.cfg
 
