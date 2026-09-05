@@ -1,4 +1,4 @@
-<img width="4032" height="3024" alt="INDX DEMON DOCK" src="https://github.com/user-attachments/assets/d8f38666-45f0-4694-b0a7-2330c001832c" />
+<img width="4032" height="3024" alt="INDX DEMON DOCK" src="/images/Demon_Dock.jpeg" />
 
 # INDX DEMON DOCKS!
 
@@ -72,7 +72,7 @@ It can even pause a tool change while printing if a problem is detected!
 
 - Signal & LED anode (with resistor) to switch C or Comm (Common)
 
-  <img width="3024" height="4032" alt="Dock Switch" src="https://github.com/user-attachments/assets/3cc2d705-6cde-496a-b49f-41e036a1ba1c" />
+  <img width="3024" height="4032" alt="Dock Switch" src="/images/Switch.jpeg" />
 
 
 
@@ -86,12 +86,12 @@ It can even pause a tool change while printing if a problem is detected!
 
 - Gently ease the parts together checking the wires DO NOT get pinched or damaged
 
-  <img width="4032" height="3024" alt="Fit1" src="https://github.com/user-attachments/assets/4116d752-9e58-4c51-afb0-cb7238ffa602" />
+  <img width="4032" height="3024" alt="Fit1" src="/images/Switch_Install.jpeg" />
 
 
 - When fully seated the system should look like this! The switch body MUST be BELOW the surface of the switch mounting recess!
 
-  <img width="4032" height="3024" alt="Fit2" src="https://github.com/user-attachments/assets/b60917c1-1e7a-4431-9636-3a4d175d604f" />
+  <img width="4032" height="3024" alt="Fit2" src="/images/Switch_Fit.jpeg" />
 
 
 
