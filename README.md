@@ -866,6 +866,8 @@ Copy the path that starts with `usb-Bondtech_INDX` and paste it into your config
 
 The `[extruder]` block above is always required and represents the Smart Head's single DX extruder. INDX passive tools are **not** separate Klipper extruders — there is only ever one `[extruder]`. Additional tools (T1, T2, …) are defined in `indx.cfg`: set `variable_tool_count` and add a `variable_t{n}_x` / `variable_t{n}_dock_y` pair per tool in the `[gcode_macro TOOL_POSITIONS]` section (see [INDX macro files](#indx-macro-files)). Per-tool XY/Z offsets come from [Tool Offsets](#tool-offsets) calibration, and per-tool nozzle sizes and temperatures are set in your slicer.
 
+**Tools that do not print.** A dock position does not have to hold a hotend. If you are carrying a pen, a cutter, a camera or anything else with nothing to heat, list its tool number in `variable_no_heat_tools` in `indx.cfg`, for example `variable_no_heat_tools: [3]`. The pickup, latch and park moves already run cold, so the only thing that changes is that the induction coil is never switched on for that tool. Setting it here rather than in the slicer matters: your change filament G-code is a single template shared by every tool, so it will pass a temperature for the pen along with everything else, and this makes the printer ignore it. The tool still needs a dock position and still counts toward `variable_tool_count`.
+
 ##### INDX macro files
 
 The INDX firmware plugin provides a set of `.cfg` files you include from `printer.cfg`. Each file has a specific role:
@@ -1527,11 +1529,15 @@ Common slicers used with INDX include PrusaSlicer, OrcaSlicer, SuperSlicer, and 
 
   Add under Printer Settings → Machine G-code → Change filament G-code:
   ```gcode
-  CHANGE_TOOL TOOL={next_extruder} TEMP={nozzle_temperature[next_extruder]}
+  CHANGE_TOOL TOOL={next_extruder} TEMP={new_filament_temp}
   M400
   ```
 
   `TEMP=` tells the toolchange what the incoming tool should heat to. Without it the macro can only fall back to the outgoing tool's temperature, which is correct when both tools print at the same temperature and wrong when they don't: the new tool gets brought to the old filament's temperature and only corrected afterwards. Passing it heats each tool to its own temperature once, with no overshoot and no second wait.
+
+  > ⚠️ **Use `new_filament_temp`, not `nozzle_temperature[next_extruder]`.** Inside OrcaSlicer's Change filament G-code the per-filament temperature arrays do not resolve to the value you asked for; users report getting the filament's **Recommended nozzle temperature → Max** instead, and `nozzle_temperature_initial_layer` and `first_layer_temperature` are affected the same way. The same placeholders are fine in Machine start G-code, which is why this is easy to miss. `new_filament_temp` is a plain value OrcaSlicer computes for the incoming filament rather than an array you index yourself, so there is no index to resolve wrongly. It is also first-layer aware, giving the first layer temperature on layer one and the other-layers temperature after that, which is what you want in a toolchange. Earlier versions of this README used the array form; if you copied it, change it.
+
+  Setting **Recommended nozzle temperature → Max** equal to your printing temperature also works, but it edits a real setting to work around a slicer bug and has to be repeated for every filament, so prefer `new_filament_temp`.
 
   **PrusaSlicer / SuperSlicer**
 
