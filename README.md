@@ -692,7 +692,7 @@ Flashing is done over SSH from your computer into the Raspberry Pi (or other hos
 
 **What you need**
 
-- **PuTTY**: a free SSH client for Windows. Download it from [putty.org](https://www.putty.org/).
+- **PuTTY**: a free SSH client for Windows. Download it from [its official site at chiark.greenend.org.uk](https://www.chiark.greenend.org.uk/~sgtatham/putty/latest.html), Simon Tatham's own page. `putty.org` is not affiliated with the project.
 - Your printer's **IP address**: find this in your router's device list, or check the display on your host if it shows one. You can also use the hostname (e.g. `mainsailos.local` or `fluidd.local`) if your network supports it.
 
 ###### Connect to your printer via SSH
