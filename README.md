@@ -866,6 +866,8 @@ Copy the path that starts with `usb-Bondtech_INDX` and paste it into your config
 
 The `[extruder]` block above is always required and represents the Smart Head's single DX extruder. INDX passive tools are **not** separate Klipper extruders — there is only ever one `[extruder]`. Additional tools (T1, T2, …) are defined in `indx.cfg`: set `variable_tool_count` and add a `variable_t{n}_x` / `variable_t{n}_dock_y` pair per tool in the `[gcode_macro TOOL_POSITIONS]` section (see [INDX macro files](#indx-macro-files)). Per-tool XY/Z offsets come from [Tool Offsets](#tool-offsets) calibration, and per-tool nozzle sizes and temperatures are set in your slicer.
 
+**Tools that do not print.** A dock position does not have to hold a hotend. If you are carrying a pen, a cutter, a camera or anything else with nothing to heat, list its tool number in `variable_no_heat_tools` in `indx.cfg`, for example `variable_no_heat_tools: [3]`. The pickup, latch and park moves already run cold, so the only thing that changes is that the induction coil is never switched on for that tool. Setting it here rather than in the slicer matters: your change filament G-code is a single template shared by every tool, so it will pass a temperature for the pen along with everything else, and this makes the printer ignore it. The tool still needs a dock position and still counts toward `variable_tool_count`.
+
 ##### INDX macro files
 
 The INDX firmware plugin provides a set of `.cfg` files you include from `printer.cfg`. Each file has a specific role:
