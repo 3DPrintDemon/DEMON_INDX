@@ -625,7 +625,7 @@ If you are printing your own, the repository has two dock bodies. The **standard
 | GitHub          | Reference design + community designs | Print yourself, or adapt for your frame      |
 
 
-Community-contributed dock designs will be added to [github.com/BondtechAB/INDX](https://github.com/BondtechAB/INDX) as they are developed. If you design a dock for an unlisted printer or frame, consider submitting it. See [Dock Design](#dock-design) for geometry constraints and design requirements before you start.
+Community-contributed dock designs live in [`community/`](community/) in the repository. There is a [2020 extrusion dock](community/1_printer_agnostic/2020-dock/) there already if your frame is 2020 rather than 15×15, along with a [magnet jig](community/1_printer_agnostic/magnet-jig/) that makes dock assembly considerably less painful. If you design a dock for an unlisted printer or frame, consider submitting it. See [Dock Design](#dock-design) for geometry constraints and design requirements before you start.
 
 **Critical dock positioning requirements**
 
@@ -1630,13 +1630,19 @@ Bondtech's sold docks use SLS-printed Nylon 12 GF. For self-printed docks, use a
 
 **Community designs**
 
-Community dock designs for specific printers and frames will be collected on [github.com/BondtechAB/INDX](https://github.com/BondtechAB/INDX). If you design a dock for an unlisted setup, submit it via pull request.
+Community dock designs for specific printers and frames are collected in [`community/`](community/). The [2020 extrusion dock](community/1_printer_agnostic/2020-dock/) there is a good worked example of adapting the reference geometry: it keeps the same hardware and the same dimensions on every other axis, and only the body changed. If you design a dock for an unlisted setup, submit it via pull request.
 
 ### Part Cooling
 
-INDX's modular part cooling system is designed to be extended by the community. The cooling solution snaps onto the outside of the Smart Head cowlings; the interface geometry is defined in the cowling CAD files, which Bondtech will publish on [github.com/BondtechAB/INDX](https://github.com/BondtechAB/INDX).
+INDX's modular part cooling system is designed to be extended by the community. The cooling solution snaps onto the outside of the Smart Head cowlings, and the interface geometry is published, so you have everything you need to design against it.
 
-If you design a custom part cooling solution using the cowling CAD files as a reference, we'd love to see it. Community-contributed cooling designs will be collected in the GitHub repository. Submit yours via pull request.
+What a shroud actually attaches to is the fan shroud clip, [`INDX_Part_Cooling_Interface_left.stl`](CAD/STL/INDX_Part_Cooling_Interface_left.stl) and [`INDX_Part_Cooling_Interface_right.stl`](CAD/STL/INDX_Part_Cooling_Interface_right.stl). The cowlings those clip to are [`INDX_Front_cover_left.stl`](CAD/STL/INDX_Front_cover_left.stl) and [`INDX_Front_cover_right.stl`](CAD/STL/INDX_Front_cover_right.stl). All of it is in the reference STEP model as well, which is the better starting point for CAD work. See [CAD Files & Templates](#cad-files--templates).
+
+Bondtech's own ducts are in the repository too and are worth reading as worked examples of the same interface: the dual 40×10 blower ducts and the CPAP ducts, including its top manifold.
+
+Two constraints to design within. Minimum tool centre-to-centre spacing goes from 34 mm bare to **41 mm** with the Bondtech cooling solutions fitted, so anything wider than those eats into dock spacing. And the tools cool passively while docked, so a shroud that blocks airflow around a parked tool works against the system rather than with it.
+
+If you design a custom part cooling solution, we'd love to see it. Community-contributed cooling designs will be collected in the GitHub repository. Submit yours via pull request.
 
 ### CAD Files & Templates
 
