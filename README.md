@@ -166,7 +166,7 @@ Select the accessories that match your printer when ordering:
 | Accessory | Options | Notes |
 | --------- | ------- | ----- |
 | **Bondtech INDX Link Cable** | Choose length | XT30 2+2 cable (24V, GND, CAN+, CAN−) with a shield connected to GND on the Link Board, from the Link Board to the Smart Head. Red/black wires carry power, yellow/white carry CAN H/L. Choose the length that fits your wiring run. See note below. |
-| **Tool Dock** | Pre-made SLS hardware or STL/STEP files | Bondtech sells ready-made docks for common Makerbeam/1515 extrusion. Or download the files and print your own. |
+| **Tool Dock** | Pre-made SLS hardware or STL/STEP files | Bondtech's ready-made docks are designed for MakerBeam XL 15×15. Or download the files and print your own; the standard 1515 body suits both profiles. |
 | **X-Carriage adapter** | MGN12H option for 6mm belts, or download files | Required to mount the Smart Head to your carriage. Available for common CoreXY standards; check the shop or download from GitHub. |
 
 > **What is CAN bus?** CAN bus is a communication standard that lets multiple devices share a single cable. You don't need to understand the protocol in depth; the Link Board handles it for you. In practice it means the Smart Head connects to the Link Board via just one 4-wire cable (carrying both power and data) instead of the bundle of wires a conventional toolhead needs. CAN is currently only supported on RRF; USB is used for Klipper/Kalico.
@@ -608,7 +608,11 @@ The dock can be positioned anywhere within the gantry's travel range, but the Sm
 
 The dock must be mounted to a rigid bar or frame element; the dock hardware alone cannot be free-standing. Most CoreXY printers have an extrusion or crossbar that works for this. If your printer does not have a suitable mounting point, you will need to add one before proceeding.
 
-The Bondtech-sold dock hardware is designed to mount on **15×15 aluminium extrusion**. If you are printing your own dock from the GitHub files, design your mounting to suit your frame.
+The dock hardware Bondtech sells is designed for **MakerBeam XL 15×15**.
+
+> 💡 **A note on fasteners.** MakerBeam XL has an indexing track running down the slot, so despite both profiles being 15×15 the two do not take a fastener quite the same way. The MakerBeam XL body still mounts fine on standard 1515 extrusion, so a ready-made dock or an already-printed MakerBeam XL body is not wasted if that is your frame. Standard T-nuts are the fiddly part: expect to shave a little material off one to clear the track. A printed M3 nut carrier for 1515 is the easier route if you have that body already.
+
+If you are printing your own, the repository has two dock bodies. The **standard 1515** one suits both profiles, which makes it the easier all-round choice. See [CAD Files & Templates](#cad-files--templates). For any other frame, design your mounting to suit it.
 
 > ⚠️ **Critical:** The dock has strict positioning requirements that must be met for reliable tool changes. Incorrect placement will cause failed pickups. See the critical requirements below before mounting.
 
@@ -617,7 +621,7 @@ The Bondtech-sold dock hardware is designed to mount on **15×15 aluminium extru
 
 | Source          | Type                                 | Mounting                                     |
 | --------------- | ------------------------------------ | -------------------------------------------- |
-| Bondtech (shop) | SLS-printed Nylon 12 GF              | Common options for 15×15 aluminium extrusion |
+| Bondtech (shop) | SLS-printed Nylon 12 GF              | Designed for MakerBeam XL 15×15              |
 | GitHub          | Reference design + community designs | Print yourself, or adapt for your frame      |
 
 
@@ -1644,11 +1648,17 @@ The STEP file is the master reference model; it contains the geometry of every p
 
 | File | Format | Description |
 | ---- | ------ | ----------- |
-| [`INDX_simplified_1.17.step`](CAD/INDX_simplified_1.17.step) | STEP | Simplified reference model of the full INDX assembly, includes all printable parts below |
+| [`INDX_simplified_1.18.step`](CAD/INDX_simplified_1.18.step) | STEP | Simplified reference model of the full INDX assembly, includes all printable parts below |
 
 **Printable parts (STL)**
 
 These are print-ready STLs of the individual parts. They are all derived from the reference STEP above.
+
+**Which Tool Dock body to print.** The dock body comes in two variants because the two 15×15 profiles do not take the same fastener: MakerBeam XL has an indexing track running down the slot that a standard 1515 T-nut will not clear.
+
+Print the **standard extrusion** body unless you have a reason not to. It suits both standard 1515 and MakerBeam XL, so it is the easier all-round choice and it keeps the dock usable if you ever move it to a different frame. The **MakerBeam XL** body is the original, and it is the geometry Bondtech's ready-made docks use; it mounts on standard 1515 as well, given a fastener that suits. Print one or the other, not both. The spring lid and magnet holder are the same either way.
+
+See [Mount the Dock](#2-mount-the-dock) for what the dock mounts to.
 
 | File | Part | Description |
 | ---- | ---- | ----------- |
@@ -1664,11 +1674,15 @@ These are print-ready STLs of the individual parts. They are all derived from th
 | [`INDX_CPAP_Duct_Right.stl`](CAD/STL/INDX_CPAP_Duct_Right.stl) | Part cooling (CPAP) | CPAP duct, right half |
 | [`INDX_CPAP_Duct_Top.stl`](CAD/STL/INDX_CPAP_Duct_Top.stl) | Part cooling (CPAP) | CPAP duct, top manifold |
 | [`INDX_Beacon_Cartographer_Mount.stl`](CAD/STL/INDX_Beacon_Cartographer_Mount.stl) | Probe mount | Mount for a Beacon / Cartographer scanning probe |
+| [`INDX Tool Dock 1515 Standard extrusion.stl`](CAD/STL/INDX%20Tool%20Dock%201515%20Standard%20extrusion.stl) | Tool Dock body | Dock main body, one per dock. Suits standard 1515 **and** MakerBeam XL; print this one unless you have a reason not to |
+| [`INDX Tool Dock 1515 MakerbeamXL.stl`](CAD/STL/INDX%20Tool%20Dock%201515%20MakerbeamXL.stl) | Tool Dock body | Dock main body, one per dock. Matches Bondtech's ready-made docks. Mounts on standard 1515 too; see the fastener note in [Mount the Dock](#2-mount-the-dock) |
+| [`INDX Tool Dock 1515 Spring lid.stl`](CAD/STL/INDX%20Tool%20Dock%201515%20Spring%20lid.stl) | Tool Dock part | Spring lid, common to both dock bodies |
+| [`INDX Tool Dock 1515 Magnet holder.STL`](CAD/STL/INDX%20Tool%20Dock%201515%20Magnet%20holder.STL) | Tool Dock part | Magnet holder slider, common to both dock bodies |
 | [`INDX_Dock_calibration_tool.stl`](CAD/STL/INDX_Dock_calibration_tool.stl) | Dock calibration tool | Printed jig for calibrating dock position during initial setup; see [Dock Position Calibration](#dock-position-calibration) |
 
 The repository is licensed under **GPL-3.0**.
 
-More files (dock templates, additional X-carriage adapters, tool body templates) will be added as the project develops. Community contributions are welcome via pull request.
+More files (additional X-carriage adapters, tool body templates) will be added as the project develops. Community contributions are welcome via pull request.
 
 ---
 
