@@ -188,9 +188,11 @@ Prusa Research has built an official first-party integration for their CoreXY pr
 | Prusa CORE One | Available | Sold by Prusa Research. Plug-and-play. Supports up to 8 tools. See [prusa3d.com](https://www.prusa3d.com/applications/prusa-3d-printers-with-bondtech-indx_243519/) for details. |
 | Prusa CORE One L | Coming later | First-party Prusa integration, availability timeline TBD. Supports up to 8 tools. |
 
-### Officially supported integrations
+### Officially recognized integrations
 
-Beyond the first-party Prusa integration, Bondtech officially supports a small set of community-built integrations for specific printers. Each comes with ready-to-print parts and the installation files needed to mount INDX on that machine. Download them from the links below.
+Beyond the first-party Prusa integration, a few community-built integrations are solid enough that Bondtech points people at them by name. Each comes with ready-to-print parts and the installation files needed to mount INDX on that machine.
+
+They are not Bondtech products. They are hosted externally and maintained by their designers, so questions about the parts themselves belong with them rather than in this repository. Recognized here means we rate the work, not that we support it.
 
 | Printer | Designer | Files |
 | ------- | -------- | ----- |
@@ -206,9 +208,9 @@ INDX runs on a wide range of CoreXY printers, far more than Bondtech could ever 
 | Printer | Status | Notes |
 | ------- | ------ | ----- |
 | Voron 2.4 | Community | |
-| Voron Trident | Community | Trident R2 has an [officially supported integration](#officially-supported-integrations) |
+| Voron Trident | Community | Trident R2 has an [officially recognized integration](#officially-recognized-integrations) |
 | RatRig V-Core | Community | |
-| Sovol | Community | SV08 OG / SV08 Max have an [officially supported integration](#officially-supported-integrations) |
+| Sovol | Community | SV08 OG / SV08 Max have an [officially recognized integration](#officially-recognized-integrations) |
 | Custom CoreXY | Community | Any CoreXY with open firmware; see [Requirements](#requirements--preparation) |
 
 **Your printer isn't listed?** If you've got INDX running on it, that integration belongs here. Submit a pull request on [github.com/BondtechAB/INDX](https://github.com/BondtechAB/INDX) and you'll save the next person hours of work. See [Contributing a printer integration](#contributing-a-printer-integration) for what to include.
@@ -549,10 +551,10 @@ The Smart Head replaces your printer's existing toolhead entirely. It mounts to 
 | Source             | Material                | Notes                                                                                                                      |
 | ------------------ | ----------------------- | -------------------------------------------------------------------------------------------------------------------------- |
 | Bondtech (shop)    | SLS-printed Nylon 12 GF | Common MGN12 carriage options available to purchase                                                                    |
-| GitHub / community | User-printed            | STL/STEP files on [github.com/BondtechAB/INDX](https://github.com/BondtechAB/INDX); print your own for less common setups |
+| GitHub / community | User-printed            | Printable MGN12H adapter (6mm belts) in the repo; use the reference STEP to adapt one for other carriages |
 
 
-If your carriage configuration isn't covered by Bondtech's sold options, check the GitHub repo for a community-contributed adapter or print your own from the provided files. A printable MGN12H adapter (6mm belts) is available in [CAD Files & Templates](#cad-files--templates). Community-made X-carriage designs that meet quality standards will be included in the official repo. If you're designing your own, see [CAD Files & Templates](#cad-files--templates) for the reference geometry files.
+If your carriage configuration isn't covered by Bondtech's sold options, the repository has a printable MGN12H adapter for 6mm belts in [CAD Files & Templates](#cad-files--templates). For anything else, the reference STEP in the same section carries the mounting geometry to design against, and the [officially recognized integrations](#officially-recognized-integrations) above cover some specific printers. Community-made X-carriage designs that meet quality standards are welcome in the repo via pull request.
 
 > **Before you start:** Remove your existing hotend, part cooling fan, and any toolhead PCB or wiring mounted on the carriage. The Smart Head replaces all of this.
 
@@ -1003,6 +1005,10 @@ Review your `PRINT_START` macro and move all `M104`/`M109` (and any temperature 
 #### RRF (RepRapFirmware)
 
 Configure the Bondtech INDX PCB in RRF following the [Duet INDX Toolboard documentation](https://docs.duet3d.com/en/Duet3D_hardware/Duet_3_family/INDX_Toolboard).
+
+The RRF tool-change and calibration macros are in [`macros/RRF/`](macros/RRF/) in this repository. They are the RRF counterpart to the Klipper `.cfg` files described above, covering the latch (`INDX_OPEN.g`, `INDX_CLOSE.g`, `INDX_LATCH_ENGAGE.g`), load-cell calibration and taring (`INDX_LC_CALIBRATE.g`, `INDX_LC_CAL.g`, `INDX_LC_RETARE.g`, `INDX_TARE.g`, `INDX_LC_SPEED_SWEEP.g`), state persistence (`INDX_WRITE_STATE.g`), and Z homing, bed levelling and meshing against the load cell (`homez.g`, `bed.g`, `mesh.g`).
+
+Settings live in [`INDX_variables.g`](macros/RRF/INDX_variables.g), which is the RRF equivalent of `indx.cfg` and the file to edit. Call it from `config.g` with `M98 P"INDX_variables.g"` **after** the hardware configuration, including after the `M558`/`G31` that create the load-cell probe.
 
 ### Initial Startup
 
@@ -1642,7 +1648,7 @@ Bondtech's own ducts are in the repository too and are worth reading as worked e
 
 Two constraints to design within. Minimum tool centre-to-centre spacing goes from 34 mm bare to **41 mm** with the Bondtech cooling solutions fitted, so anything wider than those eats into dock spacing. And the tools cool passively while docked, so a shroud that blocks airflow around a parked tool works against the system rather than with it.
 
-If you design a custom part cooling solution, we'd love to see it. Community-contributed cooling designs will be collected in the GitHub repository. Submit yours via pull request.
+If you design a custom part cooling solution, we'd love to see it. Community-contributed cooling designs are welcome in [`community/`](community/); submit yours via pull request.
 
 ### CAD Files & Templates
 
@@ -1655,6 +1661,7 @@ The STEP file is the master reference model; it contains the geometry of every p
 | File | Format | Description |
 | ---- | ------ | ----------- |
 | [`INDX_simplified_1.18.step`](CAD/INDX_simplified_1.18.step) | STEP | Simplified reference model of the full INDX assembly, includes all printable parts below |
+| [`INDX_Link_simplified_1.0.step`](CAD/INDX_Link_simplified_1.0.step) | STEP | Simplified reference model of the Link Board, for designing a mount or enclosure for it |
 
 **Printable parts (STL)**
 
